@@ -7,7 +7,6 @@ class Palette {
   static const elementPink = Color(0xffF7759C);
   static const elementLightGray = Color(0xffF7F7F9);
   static const elementGray = Color(0xff9A9B9E);
-  static const elementUnselectedGray = Color(0xffF7F7F9);
   static const elementBlack = Color(0xff130F26);
 
   static const shadowBlue = Color(0xff7CA8E8);

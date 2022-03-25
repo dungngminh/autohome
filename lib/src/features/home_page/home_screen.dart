@@ -1,5 +1,6 @@
 import 'package:autohome/src/core/theme/palette.dart';
 import 'package:badges/badges.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'widgets/widgets.dart';
@@ -16,6 +17,7 @@ class _HomeScreenState extends State<HomeScreen>
   late final PageController pageController;
   int currentPage = 0;
   late List<bool> listRoomSelectedStatus;
+  late List<bool> listDeviceStatus;
 
   final listRoom = <String>[
     "Yêu thích",
@@ -29,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     pageController = PageController();
     listRoomSelectedStatus = List.filled(listRoom.length, false)..first = true;
+    listDeviceStatus = List.filled(3, false);
     super.initState();
   }
 
@@ -63,14 +66,13 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding:
-            EdgeInsets.only(top: MediaQuery.of(context).padding.top - 24.0),
+      body: SafeArea(
         child: ListView(
+          padding: const EdgeInsets.only(top: 16.0, bottom: 24.0),
           children: [
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                  const EdgeInsets.only(left: 24.0, right: 24.0, bottom: 16.0),
               child: Row(
                 children: [
                   const Expanded(
@@ -149,151 +151,150 @@ class _HomeScreenState extends State<HomeScreen>
                 },
               ),
             ),
-            Container(
-              padding: const EdgeInsets.all(24),
-              margin: const EdgeInsets.only(left: 24, bottom: 8, right: 24),
-              decoration: BoxDecoration(
-                color: Palette.backgroundColor,
-                boxShadow: [
-                  BoxShadow(
-                    blurRadius: 10,
-                    offset: const Offset(0, 2),
-                    color: Palette.shadowBlack.withOpacity(0.1),
-                  ),
-                ],
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 24,
-                            backgroundColor:
-                                Palette.elementBlue.withOpacity(0.7),
-                            child: const Icon(
-                              PhosphorIcons.lightbulbFill,
-                              color: Palette.mainBlue,
-                              size: 28,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          const Text(
-                            "Đèn chính",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 18,
-                              color: Palette.textBlack,
-                            ),
-                          ),
-                        ],
-                      ),
-                      ClipOval(
-                        child: Material(
-                          color: Colors.transparent,
-                          child: IconButton(
-                            icon: const Icon(
-                              PhosphorIcons.arrowsClockwise,
-                              color: Palette.mainBlue,
-                              size: 28,
-                            ),
-                            onPressed: () {},
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  Row(
-                    children: [
-                      const Tooltip(
-                        message: "Nhiệt độ",
-                        child: Icon(
-                          PhosphorIcons.thermometer,
-                          color: Palette.elementGray,
-                          size: 28,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      const Tooltip(
-                        richMessage:
-                            TextSpan(text: "Nhiệt độ hiện tại là ", children: [
-                          TextSpan(
-                            text: "29°C",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ]),
-                        child: Text(
-                          "29°C",
-                          style: TextStyle(
-                            fontSize: 24,
-                            height: 1.2,
-                            letterSpacing: 0.5,
-                            color: Palette.mainBlue,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 24),
-                      const Tooltip(
-                        message: "Nhiệt độ",
-                        child: Icon(
-                          PhosphorIcons.drop,
-                          color: Palette.elementGray,
-                          size: 28,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      const Tooltip(
-                        richMessage:
-                            TextSpan(text: "Độ ẩm hiện tại là ", children: [
-                          TextSpan(
-                            text: "72%",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ]),
-                        child: Text(
-                          "72%",
-                          style: TextStyle(
-                            fontSize: 24,
-                            height: 1.2,
-                            letterSpacing: 0.5,
-                            color: Palette.mainBlue,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      ClipOval(
-                        child: Material(
-                          color: Colors.transparent,
-                          child: IconButton(
-                            tooltip: "Xem thống kê",
-                            icon: const Icon(
-                              PhosphorIcons.chartLine,
-                              color: Palette.mainBlue,
-                              size: 28,
-                            ),
-                            onPressed: () {},
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            )
+            DeviceCard(
+              isActive: listDeviceStatus[0],
+              onSwitchAction: () {
+                setState(() {
+                  listDeviceStatus[0] = !listDeviceStatus[0];
+                });
+              },
+            ),
+            DeviceCard(
+              isActive: listDeviceStatus[1],
+              onSwitchAction: () {
+                setState(() {
+                  listDeviceStatus[1] = !listDeviceStatus[1];
+                });
+              },
+            ),
+            DeviceCard(
+              isActive: listDeviceStatus[2],
+              onSwitchAction: () {
+                setState(() {
+                  listDeviceStatus[2] = !listDeviceStatus[2];
+                });
+              },
+            ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class DeviceCard extends StatelessWidget {
+  const DeviceCard({
+    Key? key,
+    required this.isActive,
+    required this.onSwitchAction,
+  }) : super(key: key);
+
+  final bool isActive;
+  final VoidCallback onSwitchAction;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      margin: const EdgeInsets.only(left: 24, bottom: 8, right: 24),
+      decoration: BoxDecoration(
+        color: Palette.backgroundColor,
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+            color: Palette.shadowBlack.withOpacity(0.1),
+          ),
+        ],
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: 24,
+                    backgroundColor: Palette.elementBlue.withOpacity(0.7),
+                    child: const Icon(
+                      PhosphorIcons.lightbulbFill,
+                      color: Palette.mainBlue,
+                      size: 28,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  const Text(
+                    "Đèn chính",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 18,
+                      color: Palette.textBlack,
+                    ),
+                  ),
+                ],
+              ),
+              ClipOval(
+                child: Material(
+                  color: Colors.transparent,
+                  child: CupertinoSwitch(
+                    trackColor: Palette.elementLightGray,
+                    activeColor: Palette.mainBlue,
+                    onChanged: (value) => onSwitchAction(),
+                    value: isActive,
+                  ),
+                ),
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 24,
+          ),
+          Row(
+            children: [
+              const Text(
+                "Màu sắc",
+                style: TextStyle(
+                  color: Palette.textBlack,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(width: 8),
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  width: 40,
+                  height: 30,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(32),
+                      color: Palette.yellowColor),
+                ),
+              ),
+              const Spacer(),
+              Material(
+                color: Colors.transparent,
+                child: Ink(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(32),
+                    color: Palette.elementLightGray,
+                  ),
+                  child: const Text(
+                    "Phòng khách",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Palette.textGray,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
