@@ -34,6 +34,11 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  device_preview: ^1.0.0
+  phosphor_flutter: ^1.4.0
+  flutter_iconly: ^1.0.2
+  flutter_riverpod: ^1.0.3
+  badges: ^2.0.2
 
 dev_dependencies:
   flutter_test:
@@ -58,9 +63,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/font/
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -73,17 +78,27 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  fonts:
+    - family: SF_Pro_Display
+      fonts:
+        - asset: assets/font/SF-Pro-Display-w100.otf
+          weight: 100
+        - asset: assets/font/SF-Pro-Display-w200.otf
+          weight: 200
+        - asset: assets/font/SF-Pro-Display-w300.otf
+          weight: 300
+        - asset: assets/font/SF-Pro-Display-w400.otf
+          weight: 400
+        - asset: assets/font/SF-Pro-Display-w500.otf
+          weight: 500
+        - asset: assets/font/SF-Pro-Display-w600.otf
+          weight: 600
+        - asset: assets/font/SF-Pro-Display-w700.otf
+          weight: 700
+        - asset: assets/font/SF-Pro-Display-w800.otf
+          weight: 800
+        - asset: assets/font/SF-Pro-Display-w900.otf
+          weight: 900
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
