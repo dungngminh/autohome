@@ -1,4 +1,6 @@
 import 'package:autohome/src/core/theme/palette.dart';
+import 'package:autohome/src/di/injector.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -14,6 +16,36 @@ class TemperatureAndHumidityCard extends StatefulWidget {
 
 class _TemperatureAndHumidityCardState
     extends State<TemperatureAndHumidityCard> {
+  double temperature = 0.0;
+  double humidity = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  Stream getData() async* {
+    // try {
+
+    // } catch (e) {
+    //   rethrow;
+    // }
+  }
+
+  Future<void> getTempHumData() async {
+    try {
+      var rs = await injector.get<Dio>().get('/dht11');
+      Iterable data = rs.data;
+      setState(() {
+        temperature = double.parse(data.elementAt(0)['temp']);
+        humidity = double.parse(data.elementAt(0)['hum']);
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -68,7 +100,9 @@ class _TemperatureAndHumidityCardState
                         color: Palette.mainBlue,
                         size: 28,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        getTempHumData();
+                      },
                     ),
                   ),
                 )
@@ -98,19 +132,21 @@ class _TemperatureAndHumidityCardState
                   ),
                 ),
                 const SizedBox(width: 8),
-                const Tooltip(
-                  richMessage:
-                      TextSpan(text: "Nhiệt độ hiện tại là ", children: [
-                    TextSpan(
-                      text: "29°C",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
+                Tooltip(
+                  richMessage: TextSpan(
+                    text: "Nhiệt độ hiện tại là ",
+                    children: [
+                      TextSpan(
+                        text: "${temperature.toStringAsFixed(0)}°C",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                    ),
-                  ]),
+                    ],
+                  ),
                   child: Text(
-                    "29°C",
-                    style: TextStyle(
+                    "${temperature.toStringAsFixed(0)}°C",
+                    style: const TextStyle(
                       fontSize: 24,
                       height: 1.2,
                       letterSpacing: 0.5,
@@ -129,18 +165,18 @@ class _TemperatureAndHumidityCardState
                   ),
                 ),
                 const SizedBox(width: 8),
-                const Tooltip(
+                Tooltip(
                   richMessage: TextSpan(text: "Độ ẩm hiện tại là ", children: [
                     TextSpan(
-                      text: "72%",
-                      style: TextStyle(
+                      text: "${humidity.toStringAsFixed(0)}%",
+                      style: const TextStyle(
                         fontWeight: FontWeight.w700,
                       ),
                     ),
                   ]),
                   child: Text(
-                    "72%",
-                    style: TextStyle(
+                    "${humidity.toStringAsFixed(0)}%",
+                    style: const TextStyle(
                       fontSize: 24,
                       height: 1.2,
                       letterSpacing: 0.5,
@@ -160,7 +196,14 @@ class _TemperatureAndHumidityCardState
                         color: Palette.mainBlue,
                         size: 28,
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        Response<ResponseBody> rs = await injector
+                            .get<Dio>()
+                            .get('/dht11',
+                                options:
+                                    Options(responseType: ResponseType.stream));
+                        print(rs.data!.stream);
+                      },
                     ),
                   ),
                 ),

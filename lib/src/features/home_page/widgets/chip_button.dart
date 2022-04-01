@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:autohome/src/core/theme/palette.dart';
+import 'package:autohome/src/di/injector.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
-class ChipButton extends StatelessWidget {
+class ChipButton extends StatefulWidget {
   const ChipButton({
     Key? key,
     required this.isSeleted,
@@ -14,9 +18,18 @@ class ChipButton extends StatelessWidget {
   final VoidCallback onChipAction;
 
   @override
+  State<ChipButton> createState() => _ChipButtonState();
+}
+
+class _ChipButtonState extends State<ChipButton> {
+  bool status = false;
+
+  
+
+  @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onChipAction,
+      onTap: widget.onChipAction,
       borderRadius: BorderRadius.circular(32),
       child: Ink(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -37,10 +50,10 @@ class ChipButton extends StatelessWidget {
             fontSize: 15,
             fontWeight: FontWeight.w600,
             height: 22 / 15,
-            color: isSeleted ? Palette.textBlack : Palette.textGray,
+            color: widget.isSeleted ? Palette.textBlack : Palette.textGray,
           ),
           child: Center(
-            child: Text(roomName),
+            child: Text(widget.roomName),
           ),
         ),
       ),
