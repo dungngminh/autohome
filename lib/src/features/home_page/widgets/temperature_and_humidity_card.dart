@@ -1,5 +1,6 @@
 import 'package:autohome/src/core/theme/palette.dart';
-import 'package:autohome/src/di/injector.dart';
+import 'package:autohome/src/core/utils/app_utils.dart';
+import 'package:autohome/src/core/utils/toast_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -7,7 +8,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 class TemperatureAndHumidityCard extends StatefulWidget {
   const TemperatureAndHumidityCard({
     Key? key,
-  }) : super(key: key);
+  }) : super(key: key);  
 
   @override
   State<TemperatureAndHumidityCard> createState() =>
@@ -22,7 +23,7 @@ class _TemperatureAndHumidityCardState
   @override
   void initState() {
     super.initState();
-    getData();
+    // getTempHumData();
   }
 
   Stream getData() async* {
@@ -33,18 +34,18 @@ class _TemperatureAndHumidityCardState
     // }
   }
 
-  Future<void> getTempHumData() async {
-    try {
-      var rs = await injector.get<Dio>().get('/dht11');
-      Iterable data = rs.data;
-      setState(() {
-        temperature = double.parse(data.elementAt(0)['temp']);
-        humidity = double.parse(data.elementAt(0)['hum']);
-      });
-    } catch (e) {
-      rethrow;
-    }
-  }
+  // Future<void> getTempHumData() async {
+  //   try {
+  //     var rs = await injector.get<Dio>().get('/dht11');
+  //     Iterable data = rs.data;
+  //     setState(() {
+  //       temperature = double.parse(data.elementAt(0)['temp']);
+  //       humidity = double.parse(data.elementAt(0)['hum']);
+  //     });
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +102,17 @@ class _TemperatureAndHumidityCardState
                         size: 28,
                       ),
                       onPressed: () {
-                        getTempHumData();
+                        // ToastUtils.make(
+                        //     message: "Đang lấy dữ liệu nhiệt độ và độ ẩm");
+                        // getTempHumData().then((_) {
+                        //   ToastUtils.make(message: "Đã lấy dữ liệu thành công");
+                        // }).catchError((error) {
+                        //   AppUtils.logger(error!,
+                        //       location: runtimeType, isError: true);
+                        //   ToastUtils.make(
+                        //       message:
+                        //           "Lấy dữ liệu không thành công, vui lòng thử lại");
+                        // });
                       },
                     ),
                   ),
@@ -196,14 +207,7 @@ class _TemperatureAndHumidityCardState
                         color: Palette.mainBlue,
                         size: 28,
                       ),
-                      onPressed: () async {
-                        Response<ResponseBody> rs = await injector
-                            .get<Dio>()
-                            .get('/dht11',
-                                options:
-                                    Options(responseType: ResponseType.stream));
-                        print(rs.data!.stream);
-                      },
+                      onPressed: () async {},
                     ),
                   ),
                 ),

@@ -1,8 +1,4 @@
-import 'dart:developer';
-
 import 'package:autohome/src/core/theme/palette.dart';
-import 'package:autohome/src/di/injector.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class ChipButton extends StatefulWidget {
@@ -23,8 +19,6 @@ class ChipButton extends StatefulWidget {
 
 class _ChipButtonState extends State<ChipButton> {
   bool status = false;
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +43,6 @@ class _ChipButtonState extends State<ChipButton> {
           style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w600,
-            height: 22 / 15,
             color: widget.isSeleted ? Palette.textBlack : Palette.textGray,
           ),
           child: Center(
