@@ -230,28 +230,56 @@ class _DevicePanelState extends State<DevicePanel> {
             },
           ),
         ),
-        Consumer(builder: (context, ref, child) {
-          final state = ref.watch(deviceProvider);
-          return state.maybeWhen(
-            error: (errorMessage) {
-              return const SizedBox();
-            },
-            loaded: (List<Device> devices) {
-              return Column(
-                children: devices
-                    .map(((device) => DeviceCard(
-                          color: Colors.red,
-                          device: device,
-                        )))
-                    .toList(),
-              );
-            },
-            loading: () => const Center(
-              child: CircularProgressIndicator(),
-            ),
-            orElse: () => const SizedBox(),
-          );
-        }),
+        Consumer(
+          builder: (context, ref, child) {
+            final state = ref.watch(deviceProvider);
+            return state.maybeWhen(
+              error: (errorMessage) {
+                return const SizedBox();
+              },
+              loaded: (List<Device> devices) {
+                return Column(
+                  children: devices
+                      .map(
+                        ((device) => DeviceCard(
+                              color: Colors.red,
+                              device: device,
+                            )),
+                      )
+                      .toList(),
+                );
+              },
+              loading: () => const Center(
+                child: CircularProgressIndicator(),
+              ),
+              orElse: () => const SizedBox(),
+            );
+          },
+        ),
+        DeviceCard(
+          device: Device(
+            name: "Quạt",
+            location: 'Phòng khách',
+            status: 'on',
+            type: 'Motor',
+          ),
+        ),
+        DeviceCard(
+          device: Device(
+            name: "Quạt",
+            location: 'Nhà bếp',
+            status: 'on',
+            type: 'Motor',
+          ),
+        ),
+        DeviceCard(
+          device: Device(
+            name: "Đèn phòng khách",
+            location: 'Nhà bếp',
+            status: 'on',
+            type: 'Led',
+          ),
+        )
       ],
     );
   }

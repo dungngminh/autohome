@@ -44,6 +44,7 @@ dependencies:
   pretty_dio_logger: ^1.2.0-beta-1
   fluttertoast: ^8.0.9
   freezed_annotation: ^1.1.0
+  web_socket_channel: ^2.1.0
 
 dev_dependencies:
   flutter_test:

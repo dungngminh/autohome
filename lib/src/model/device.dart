@@ -1,4 +1,3 @@
-import 'package:autohome/src/core/enum/enum.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'device.freezed.dart';
@@ -12,6 +11,6 @@ class Device with _$Device {
     required String location,
     required String status,
   }) = DeviceData;
- 
+
   factory Device.fromJson(Map<String, dynamic> json) => _$DeviceFromJson(json);
 }
