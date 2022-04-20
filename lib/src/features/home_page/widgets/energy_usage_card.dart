@@ -89,7 +89,7 @@ class _EnergyUsageCardState extends State<EnergyUsageCard> {
                   height: 1,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
-                    color: Palette.mainBlue,
+                    color: Palette.backgroundColor,
                   ),
                 ),
               ),

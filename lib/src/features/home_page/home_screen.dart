@@ -136,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen>
                   color: Palette.mainBlue,
                   borderRadius: BorderRadius.circular(20),
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () => Navigator.pushNamed(context, '/add'),
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -256,30 +256,6 @@ class _DevicePanelState extends State<DevicePanel> {
             );
           },
         ),
-        DeviceCard(
-          device: Device(
-            name: "Quạt",
-            location: 'Phòng khách',
-            status: 'on',
-            type: 'Motor',
-          ),
-        ),
-        DeviceCard(
-          device: Device(
-            name: "Quạt",
-            location: 'Nhà bếp',
-            status: 'on',
-            type: 'Motor',
-          ),
-        ),
-        DeviceCard(
-          device: Device(
-            name: "Đèn phòng khách",
-            location: 'Nhà bếp',
-            status: 'on',
-            type: 'Led',
-          ),
-        )
       ],
     );
   }

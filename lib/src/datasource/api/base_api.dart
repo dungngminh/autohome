@@ -5,7 +5,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 final baseApiProvider = Provider<BaseApi>((ref) {
   var dioOption = BaseOptions(
-    baseUrl: "http://6.tcp.ngrok.io:19553",
+    baseUrl: "http://4.tcp.ngrok.io:19914",
     receiveTimeout: const Duration(minutes: 3).inMilliseconds,
     connectTimeout: const Duration(minutes: 3).inMilliseconds,
   );

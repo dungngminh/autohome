@@ -3,6 +3,6 @@ import 'package:web_socket_channel/io.dart';
 
 final webSockerProvider = AutoDisposeProvider<IOWebSocketChannel>((ref) {
   final channel =
-      IOWebSocketChannel.connect("ws://6.tcp.ngrok.io:19553/basehub");
+      IOWebSocketChannel.connect("ws://4.tcp.ngrok.io:19914/basehub");
   return channel;
 });

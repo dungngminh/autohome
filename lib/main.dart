@@ -12,7 +12,7 @@ void main() {
   // initDependences();
   runApp(DevicePreview(
     enabled: Platform.isWindows,
-    builder: (context) => const ProviderScope(child: App()), // Wrap your app
+    builder: (context) => ProviderScope(child: App()), // Wrap your app
   ));
   // runApp(const App());
 }

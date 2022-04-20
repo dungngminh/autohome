@@ -15,6 +15,7 @@ class Palette {
   static const textGray = Color(0xff9A9B9E);
   static const textBlue = Color(0xffD2E0EE);
   static const textBlack = Color(0xff130F26);
+  static const textBlack2 = Color(0xff161616);
 
   static const backgroundColor = Color(0xffFFFFFF);
   static const yellowColor = Color(0xffFAE297);

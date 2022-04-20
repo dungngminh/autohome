@@ -3,7 +3,7 @@ import 'package:autohome/src/model/device.dart';
 import 'package:autohome/src/repository/data_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final actionDeviceProvider = Provider<StatusDeviceController>((ref) {
+final actionDeviceProvider = AutoDisposeProvider<StatusDeviceController>((ref) {
   final repo = ref.watch<DataRepository>(dataRepositoryProvider);
   return StatusDeviceController(dataRepository: repo);
 });

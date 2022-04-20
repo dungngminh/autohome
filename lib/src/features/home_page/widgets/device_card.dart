@@ -59,72 +59,66 @@ class _DeviceCardState extends State<DeviceCard> {
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 24,
-                    backgroundColor: Palette.elementBlue.withOpacity(0.7),
-                    child: Icon(
-                      widget.device.mapToDeviceType() == DeviceType.led
-                          ? PhosphorIcons.lightbulbFill
-                          : (widget.device.mapToDeviceType() == DeviceType.fan
-                              ? PhosphorIcons.wind
-                              : PhosphorIcons.lightbulbFilament),
-                      color: Palette.mainBlue,
-                      size: 28,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Text(
-                    widget.device.name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18,
-                      color: Palette.textBlack,
-                    ),
-                  ),
-                ],
+              CircleAvatar(
+                radius: 24,
+                backgroundColor: Palette.elementBlue.withOpacity(0.7),
+                child: Icon(
+                  widget.device.mapToDeviceType() == DeviceType.led
+                      ? PhosphorIcons.lightbulbFill
+                      : (widget.device.mapToDeviceType() == DeviceType.fan
+                          ? PhosphorIcons.wind
+                          : PhosphorIcons.lightbulbFilament),
+                  color: Palette.mainBlue,
+                  size: 28,
+                ),
               ),
-              ClipOval(
-                child: Material(
-                    color: Colors.transparent,
-                    child: Consumer(builder: (context, ref, child) {
-                      return CupertinoSwitch(
-                        trackColor: Palette.elementLightGray,
-                        activeColor: Palette.mainBlue,
-                        onChanged: (value) async {
-                          Fluttertoast.showToast(
-                              msg: value
-                                  ? "Đang bật ${widget.device.name}"
-                                  : "Đang tắt ${widget.device.name}");
-                          await ref
-                              .read(actionDeviceProvider)
-                              .deviceAction(
-                                  device: widget.device, status: status)
-                              .then((_) {
-                            setState(() {
-                              status = value;
-                            });
-                            Fluttertoast.showToast(
-                                msg: value
-                                    ? "Đang bật ${widget.device.name}"
-                                    : "Đang tắt ${widget.device.name}");
-                          }).catchError((error, __) {
-                            AppUtils.logger(error,
-                                location: runtimeType, isError: true);
-                            Fluttertoast.showToast(
-                              msg: value
-                                  ? "Bật ${widget.device.name} không thành công,\nvui lòng thử lại"
-                                  : "Tắt ${widget.device.name} không thành công,\nvui lòng thử lại",
-                            );
-                          });
-                        },
-                        value: status,
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  widget.device.name,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 18,
+                    color: Palette.textBlack,
+                  ),
+                ),
+              ),
+              Consumer(builder: (context, ref, child) {
+                return CupertinoSwitch(
+                  trackColor: Palette.elementLightGray,
+                  activeColor: Palette.mainBlue,
+                  onChanged: (value) async {
+                    
+
+                    Fluttertoast.showToast(
+                        msg: value
+                            ? "Đang bật ${widget.device.name}"
+                            : "Đang tắt ${widget.device.name}");
+                    await ref
+                        .read(actionDeviceProvider)
+                        .deviceAction(device: widget.device, status: status)
+                        .then((_) {
+                      setState(() {
+                        status = value;
+                      });
+                      Fluttertoast.showToast(
+                          msg: value
+                              ? "Đang bật ${widget.device.name}"
+                              : "Đang tắt ${widget.device.name}");
+                    }).catchError((error, __) {
+                      AppUtils.logger(error,
+                          location: runtimeType, isError: true);
+                      Fluttertoast.showToast(
+                        msg: value
+                            ? "Bật ${widget.device.name} không thành công,\nvui lòng thử lại"
+                            : "Tắt ${widget.device.name} không thành công,\nvui lòng thử lại",
                       );
-                    })),
-              ),
+                    });
+                  },
+                  value: status,
+                );
+              }),
             ],
           ),
           const SizedBox(

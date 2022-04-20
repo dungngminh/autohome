@@ -1,10 +1,5 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:autohome/src/core/theme/palette.dart';
-import 'package:autohome/src/datasource/socket/socket.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class TemperatureAndHumidityCard extends StatefulWidget {
@@ -134,195 +129,195 @@ class _TemperatureAndHumidityCardState
                 ),
               ),
             ),
-            Consumer(builder: (context, ref, child) {
-              final streamSub = ref.watch(socketProvider);
+            // Consumer(builder: (context, ref, child) {
+            //   final streamSub = ref.watch(socketProvider);
 
-              return Row(
-                children: [
-                  const Tooltip(
-                    message: "Nhiệt độ",
-                    child: Icon(
-                      PhosphorIcons.thermometer,
-                      color: Palette.elementGray,
-                      size: 28,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Tooltip(
-                    richMessage: TextSpan(
-                      text: "Nhiệt độ hiện tại là ",
-                      children: [
-                        TextSpan(
-                          text: "${temperature.toStringAsFixed(0)}°C",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ],
-                    ),
-                    child: streamSub.when(
-                      data: (data) {
-                        log(data);
-                        final converted = jsonDecode(data);
-                        Map<String, dynamic> dataHumiTemp = converted['data'];
-                        return Text(
-                          dataHumiTemp['temp'].toString(),
-                          style: const TextStyle(
-                            fontSize: 24,
-                            height: 1.2,
-                            letterSpacing: 0.5,
-                            color: Palette.mainBlue,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        );
-                      },
-                      error: (errorr, _) {
-                        return const Text("hello");
-                      },
-                      loading: () => const Text("..."),
-                    ),
-                  ),
-                  const SizedBox(width: 24),
-                  const Tooltip(
-                    message: "Nhiệt độ",
-                    child: Icon(
-                      PhosphorIcons.drop,
-                      color: Palette.elementGray,
-                      size: 28,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Tooltip(
-                    richMessage:
-                        TextSpan(text: "Độ ẩm hiện tại là ", children: [
-                      TextSpan(
-                        text: "${humidity.toStringAsFixed(0)}%",
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ]),
-                    child: streamSub.when(
-                      data: (data) {
-                        log(data);
-                        final converted = jsonDecode(data);
-                        Map<String, dynamic> dataHumiTemp = converted['data'];
-                        return Text(
-                          dataHumiTemp['hump'].toString(),
-                          style: const TextStyle(
-                            fontSize: 24,
-                            height: 1.2,
-                            letterSpacing: 0.5,
-                            color: Palette.mainBlue,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        );
-                      },
-                      error: (errorr, _) {
-                        return const Text("hello");
-                      },
-                      loading: () => const Text("..."),
-                    ),
-                  ),
-                  const Spacer(),
-                  ClipOval(
-                    child: Material(
-                      color: Colors.transparent,
-                      child: IconButton(
-                        tooltip: "Xem thống kê",
-                        icon: const Icon(
-                          PhosphorIcons.chartLine,
-                          color: Palette.mainBlue,
-                          size: 28,
-                        ),
-                        onPressed: () async {},
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            }),
-            // Row(
-            //   children: [
-            //     const Tooltip(
-            //       message: "Nhiệt độ",
-            //       child: Icon(
-            //         PhosphorIcons.thermometer,
-            //         color: Palette.elementGray,
-            //         size: 28,
+            //   return Row(
+            //     children: [
+            //       const Tooltip(
+            //         message: "Nhiệt độ",
+            //         child: Icon(
+            //           PhosphorIcons.thermometer,
+            //           color: Palette.elementGray,
+            //           size: 28,
+            //         ),
             //       ),
-            //     ),
-            //     const SizedBox(width: 8),
-            //     Tooltip(
-            //       richMessage: TextSpan(
-            //         text: "Nhiệt độ hiện tại là ",
-            //         children: [
+            //       const SizedBox(width: 8),
+            //       Tooltip(
+            //         richMessage: TextSpan(
+            //           text: "Nhiệt độ hiện tại là ",
+            //           children: [
+            //             TextSpan(
+            //               text: "${temperature.toStringAsFixed(0)}°C",
+            //               style: const TextStyle(
+            //                 fontWeight: FontWeight.w700,
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //         child: streamSub.when(
+            //           data: (data) {
+            //             log(data);
+            //             final converted = jsonDecode(data);
+            //             Map<String, dynamic> dataHumiTemp = converted['data'];
+            //             return Text(
+            //               dataHumiTemp['temp'].toString(),
+            //               style: const TextStyle(
+            //                 fontSize: 24,
+            //                 height: 1.2,
+            //                 letterSpacing: 0.5,
+            //                 color: Palette.mainBlue,
+            //                 fontWeight: FontWeight.w700,
+            //               ),
+            //             );
+            //           },
+            //           error: (errorr, _) {
+            //             return const Text("hello");
+            //           },
+            //           loading: () => const Text("..."),
+            //         ),
+            //       ),
+            //       const SizedBox(width: 24),
+            //       const Tooltip(
+            //         message: "Nhiệt độ",
+            //         child: Icon(
+            //           PhosphorIcons.drop,
+            //           color: Palette.elementGray,
+            //           size: 28,
+            //         ),
+            //       ),
+            //       const SizedBox(width: 8),
+            //       Tooltip(
+            //         richMessage:
+            //             TextSpan(text: "Độ ẩm hiện tại là ", children: [
             //           TextSpan(
-            //             text: "${temperature.toStringAsFixed(0)}°C",
+            //             text: "${humidity.toStringAsFixed(0)}%",
             //             style: const TextStyle(
             //               fontWeight: FontWeight.w700,
             //             ),
             //           ),
-            //         ],
-            //       ),
-            //       child: Text(
-            //         "${temperature.toStringAsFixed(0)}°C",
-            //         style: const TextStyle(
-            //           fontSize: 24,
-            //           height: 1.2,
-            //           letterSpacing: 0.5,
-            //           color: Palette.mainBlue,
-            //           fontWeight: FontWeight.w700,
+            //         ]),
+            //         child: streamSub.when(
+            //           data: (data) {
+            //             log(data);
+            //             final converted = jsonDecode(data);
+            //             Map<String, dynamic> dataHumiTemp = converted['data'];
+            //             return Text(
+            //               dataHumiTemp['hump'].toString(),
+            //               style: const TextStyle(
+            //                 fontSize: 24,
+            //                 height: 1.2,
+            //                 letterSpacing: 0.5,
+            //                 color: Palette.mainBlue,
+            //                 fontWeight: FontWeight.w700,
+            //               ),
+            //             );
+            //           },
+            //           error: (errorr, _) {
+            //             return const Text("hello");
+            //           },
+            //           loading: () => const Text("..."),
             //         ),
             //       ),
-            //     ),
-            //     const SizedBox(width: 24),
-            //     const Tooltip(
-            //       message: "Nhiệt độ",
-            //       child: Icon(
-            //         PhosphorIcons.drop,
-            //         color: Palette.elementGray,
-            //         size: 28,
-            //       ),
-            //     ),
-            //     const SizedBox(width: 8),
-            //     Tooltip(
-            //       richMessage: TextSpan(text: "Độ ẩm hiện tại là ", children: [
-            //         TextSpan(
-            //           text: "${humidity.toStringAsFixed(0)}%",
-            //           style: const TextStyle(
-            //             fontWeight: FontWeight.w700,
+            //       const Spacer(),
+            //       ClipOval(
+            //         child: Material(
+            //           color: Colors.transparent,
+            //           child: IconButton(
+            //             tooltip: "Xem thống kê",
+            //             icon: const Icon(
+            //               PhosphorIcons.chartLine,
+            //               color: Palette.mainBlue,
+            //               size: 28,
+            //             ),
+            //             onPressed: () async {},
             //           ),
             //         ),
-            //       ]),
-            //       child: Text(
-            //         "${humidity.toStringAsFixed(0)}%",
-            //         style: const TextStyle(
-            //           fontSize: 24,
-            //           height: 1.2,
-            //           letterSpacing: 0.5,
-            //           color: Palette.mainBlue,
-            //           fontWeight: FontWeight.w700,
-            //         ),
             //       ),
-            //     ),
-            //     const Spacer(),
-            //     ClipOval(
-            //       child: Material(
-            //         color: Colors.transparent,
-            //         child: IconButton(
-            //           tooltip: "Xem thống kê",
-            //           icon: const Icon(
-            //             PhosphorIcons.chartLine,
-            //             color: Palette.mainBlue,
-            //             size: 28,
-            //           ),
-            //           onPressed: () async {},
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // )
+            //     ],
+            //   );
+            // }),
+            Row(
+              children: [
+                const Tooltip(
+                  message: "Nhiệt độ",
+                  child: Icon(
+                    PhosphorIcons.thermometer,
+                    color: Palette.elementGray,
+                    size: 28,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Tooltip(
+                  richMessage: TextSpan(
+                    text: "Nhiệt độ hiện tại là ",
+                    children: [
+                      TextSpan(
+                        text: "${temperature.toStringAsFixed(0)}°C",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                  child: Text(
+                    "${temperature.toStringAsFixed(0)}°C",
+                    style: const TextStyle(
+                      fontSize: 24,
+                      height: 1.2,
+                      letterSpacing: 0.5,
+                      color: Palette.mainBlue,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 24),
+                const Tooltip(
+                  message: "Nhiệt độ",
+                  child: Icon(
+                    PhosphorIcons.drop,
+                    color: Palette.elementGray,
+                    size: 28,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Tooltip(
+                  richMessage: TextSpan(text: "Độ ẩm hiện tại là ", children: [
+                    TextSpan(
+                      text: "${humidity.toStringAsFixed(0)}%",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ]),
+                  child: Text(
+                    "${humidity.toStringAsFixed(0)}%",
+                    style: const TextStyle(
+                      fontSize: 24,
+                      height: 1.2,
+                      letterSpacing: 0.5,
+                      color: Palette.mainBlue,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                ClipOval(
+                  child: Material(
+                    color: Colors.transparent,
+                    child: IconButton(
+                      tooltip: "Xem thống kê",
+                      icon: const Icon(
+                        PhosphorIcons.chartLine,
+                        color: Palette.mainBlue,
+                        size: 28,
+                      ),
+                      onPressed: () async {},
+                    ),
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),
