@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:autohome/src/core/utils/app_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,7 +7,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 final baseApiProvider = Provider<BaseApi>((ref) {
   var dioOption = BaseOptions(
-    baseUrl: "http://4.tcp.ngrok.io:19914",
+    baseUrl: "http://2.tcp.ngrok.io:12196",
     receiveTimeout: const Duration(minutes: 3).inMilliseconds,
     connectTimeout: const Duration(minutes: 3).inMilliseconds,
   );
@@ -29,6 +31,7 @@ class BaseApi {
 
   Future<Response> post({required String path, required dynamic data}) async {
     try {
+      log("Call");
       return await dio.post(path, data: data);
     } on DioError catch (e) {
       AppUtils.logger(e, location: runtimeType, isError: true);

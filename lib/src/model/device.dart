@@ -14,3 +14,5 @@ class Device with _$Device {
 
   factory Device.fromJson(Map<String, dynamic> json) => _$DeviceFromJson(json);
 }
+
+

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:autohome/src/app.dart';
+import 'package:autohome/src/core/utils/riverpod_logger.dart';
 // import 'package:autohome/src/di/injector.dart';
 import 'package:device_preview/device_preview.dart';
 // import 'package:device_preview/device_preview.dart';
@@ -12,7 +13,8 @@ void main() {
   // initDependences();
   runApp(DevicePreview(
     enabled: Platform.isWindows,
-    builder: (context) => ProviderScope(child: App()), // Wrap your app
+    builder: (context) => ProviderScope(
+        observers: [RiverpodLogger()], child: App()), // Wrap your app
   ));
   // runApp(const App());
 }

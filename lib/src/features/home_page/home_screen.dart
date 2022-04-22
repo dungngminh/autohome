@@ -1,21 +1,23 @@
 import 'package:autohome/src/core/theme/palette.dart';
-import 'package:autohome/src/features/home_page/controller/controller.dart';
+import 'package:autohome/src/features/home_page/controller/device_controller.dart';
+import 'package:autohome/src/features/home_page/widgets/chip_button.dart';
 import 'package:autohome/src/features/home_page/widgets/device_card.dart';
+import 'package:autohome/src/features/home_page/widgets/energy_usage_card.dart';
+import 'package:autohome/src/features/home_page/widgets/temperature_and_humidity_card.dart';
 import 'package:autohome/src/model/device.dart';
 // import 'package:autohome/src/di/injector.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'widgets/widgets.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
+class _HomeScreenState extends ConsumerState<HomeScreen>
     with SingleTickerProviderStateMixin {
   late final PageController pageController;
   int currentPage = 0;
@@ -56,23 +58,6 @@ class _HomeScreenState extends State<HomeScreen>
       ),
     );
   }
-
-  // Future<void> getAllDevice({String? location}) async {
-  //   try {
-  //     // final Response<String> response = await injector.get<Dio>().get(
-  //     //       "/device",
-  //     //       queryParameters: location != null ? {"location": location} : null,
-  //     //     );
-  //     // if (response.statusCode == 200) {
-  //     //   AppUtils.logger(response.data!, location: runtimeType);
-  //     // } else {
-  //     //   AppUtils.logger(response.data!, location: runtimeType, isError: true);
-  //     // }
-  //   } catch (e) {
-  //     AppUtils.logger(e, location: runtimeType, isError: true);
-  //     rethrow;
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +121,18 @@ class _HomeScreenState extends State<HomeScreen>
                   color: Palette.mainBlue,
                   borderRadius: BorderRadius.circular(20),
                   child: InkWell(
-                    onTap: () => Navigator.pushNamed(context, '/add'),
+                    onTap: () async {
+                      await Navigator.pushNamed(context, '/add')
+                          .then((isRefresh) async {
+                        if (isRefresh == null) {
+                          return;
+                        } else if (isRefresh as bool) {
+                          await ref
+                              .read(deviceProvider.notifier)
+                              .getDataDevice();
+                        }
+                      });
+                    },
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
                       padding: const EdgeInsets.symmetric(

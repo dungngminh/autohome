@@ -1,4 +1,4 @@
-import 'package:autohome/src/features/home_page/add_device_screen.dart';
+import 'package:autohome/src/features/home_page/modules/add_device_screen/add_device_screen.dart';
 import 'package:autohome/src/features/home_page/home_screen.dart';
 import 'package:autohome/src/features/main_screen/main_screen.dart';
 import 'package:device_preview/device_preview.dart';

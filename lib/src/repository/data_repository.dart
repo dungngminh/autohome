@@ -1,5 +1,10 @@
+import 'dart:developer';
+
 import 'package:autohome/src/datasource/api/base_api.dart';
+import 'package:autohome/src/features/home_page/modules/add_device_screen/controller/add_device_params.dart';
 import 'package:autohome/src/model/device.dart';
+import 'package:autohome/src/model/schedule.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final dataRepositoryProvider = Provider<DataRepository>((ref) {
@@ -35,6 +40,24 @@ class DataRepository {
       return response.data;
     } catch (e) {
       throw Exception();
+    }
+  }
+
+  Future<void> addDevice({required AddDeviceParams params}) async {
+    try {
+      final formData = FormData.fromMap(params.toJson());
+      log(formData.toString());
+      await baseApi.post(path: '/device', data: formData);
+    } catch (e) {
+      throw Exception("happy add device");
+    }
+  }
+
+  Future<void> addSchedule({required Schedule schedule}) async {
+    try {
+      final formData = FormData.fromMap(schedule.toJson());
+    } catch (e) {
+      throw Exception("Happy add schedule");
     }
   }
 }

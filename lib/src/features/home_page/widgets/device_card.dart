@@ -3,7 +3,7 @@ import 'package:autohome/src/core/extenstion/device_x.dart';
 import 'package:autohome/src/core/extenstion/string_x.dart';
 import 'package:autohome/src/core/theme/palette.dart';
 import 'package:autohome/src/core/utils/app_utils.dart';
-import 'package:autohome/src/features/home_page/controller/status_device_controller.dart';
+import 'package:autohome/src/features/home_page/controller/action_device_controller.dart';
 import 'package:autohome/src/model/device.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -89,8 +89,6 @@ class _DeviceCardState extends State<DeviceCard> {
                   trackColor: Palette.elementLightGray,
                   activeColor: Palette.mainBlue,
                   onChanged: (value) async {
-                    
-
                     Fluttertoast.showToast(
                         msg: value
                             ? "Đang bật ${widget.device.name}"
@@ -147,6 +145,11 @@ class _DeviceCardState extends State<DeviceCard> {
                               return Slider(
                                 onChanged: (newValue) {
                                   valueSlider.value = newValue;
+                                  if (newValue == 0.0) {
+                                    setState(() {
+                                      status = false;
+                                    });
+                                  }
                                 },
                                 value: value,
                                 onChangeStart: (value) {},
