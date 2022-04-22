@@ -25,15 +25,14 @@ class DeviceCard extends StatefulWidget {
 }
 
 class _DeviceCardState extends State<DeviceCard> {
-  late bool status;
+  late ValueNotifier<bool> statusNotifier;
   late ValueNotifier<double> valueSlider;
 
   @override
   void initState() {
-    status = widget.device.mapToStatus();
-
+    statusNotifier = ValueNotifier(widget.device.mapToStatus());
     if (widget.device.mapToDeviceType() == DeviceType.fan) {
-      valueSlider = ValueNotifier(0.5);
+      valueSlider = ValueNotifier(20.0);
     } else {
       valueSlider = ValueNotifier(0.0);
     }
@@ -84,48 +83,80 @@ class _DeviceCardState extends State<DeviceCard> {
                   ),
                 ),
               ),
-              Consumer(builder: (context, ref, child) {
-                return CupertinoSwitch(
-                  trackColor: Palette.elementLightGray,
-                  activeColor: Palette.mainBlue,
-                  onChanged: (value) async {
-                    Fluttertoast.showToast(
-                        msg: value
-                            ? "Đang bật ${widget.device.name}"
-                            : "Đang tắt ${widget.device.name}");
-                    await ref
-                        .read(actionDeviceProvider)
-                        .deviceAction(device: widget.device, status: status)
-                        .then((_) {
-                      setState(() {
-                        status = value;
-                      });
-                      Fluttertoast.showToast(
-                          msg: value
-                              ? "Đang bật ${widget.device.name}"
-                              : "Đang tắt ${widget.device.name}");
-                    }).catchError((error, __) {
-                      AppUtils.logger(error,
-                          location: runtimeType, isError: true);
-                      Fluttertoast.showToast(
-                        msg: value
-                            ? "Bật ${widget.device.name} không thành công,\nvui lòng thử lại"
-                            : "Tắt ${widget.device.name} không thành công,\nvui lòng thử lại",
+              ValueListenableBuilder<bool>(
+                  valueListenable: statusNotifier,
+                  builder: (context, status, child) {
+                    return Consumer(builder: (context, ref, child) {
+                      return CupertinoSwitch(
+                        trackColor: Palette.elementLightGray,
+                        activeColor: Palette.mainBlue,
+                        onChanged: (value) async {
+                          if (widget.device.mapToDeviceType() ==
+                              DeviceType.fan) {
+                            Fluttertoast.showToast(
+                                msg: value
+                                    ? "Đang bật ${widget.device.name}"
+                                    : "Đang tắt ${widget.device.name}");
+                            await ref
+                                .read(actionDeviceProvider)
+                                .doFanAction(
+                                    nameFan: widget.device.name,
+                                    value: value ? 20 : 0)
+                                .then((_) {
+                              statusNotifier.value = value;
+                              valueSlider.value = value ? 20 : 0;
+                              Fluttertoast.showToast(
+                                  msg: value
+                                      ? "Đã bật ${widget.device.name}"
+                                      : "Đã tắt ${widget.device.name}");
+                            }).catchError((error, __) {
+                              AppUtils.logger(error,
+                                  location: runtimeType, isError: true);
+                              Fluttertoast.showToast(
+                                msg: value
+                                    ? "Bật ${widget.device.name} không thành công,\nvui lòng thử lại"
+                                    : "Tắt ${widget.device.name} không thành công,\nvui lòng thử lại",
+                              );
+                            });
+                          } else {
+                            Fluttertoast.showToast(
+                                msg: value
+                                    ? "Đang bật ${widget.device.name}"
+                                    : "Đang tắt ${widget.device.name}");
+                            await ref
+                                .read(actionDeviceProvider)
+                                .doLedAction(
+                                    nameLed: widget.device.name, status: status)
+                                .then((_) {
+                              statusNotifier.value = value;
+                              Fluttertoast.showToast(
+                                  msg: value
+                                      ? "Đã bật ${widget.device.name}"
+                                      : "Đã tắt ${widget.device.name}");
+                            }).catchError((error, __) {
+                              AppUtils.logger(error,
+                                  location: runtimeType, isError: true);
+                              Fluttertoast.showToast(
+                                msg: value
+                                    ? "Bật ${widget.device.name} không thành công,\nvui lòng thử lại"
+                                    : "Tắt ${widget.device.name} không thành công,\nvui lòng thử lại",
+                              );
+                            });
+                          }
+                        },
+                        value: status,
                       );
                     });
-                  },
-                  value: status,
-                );
-              }),
+                  }),
             ],
           ),
           const SizedBox(
             height: 24,
           ),
           IgnorePointer(
-            ignoring: !status,
+            ignoring: !statusNotifier.value,
             child: Opacity(
-              opacity: status ? 1.0 : 0.6,
+              opacity: statusNotifier.value ? 1.0 : 0.6,
               child: widget.device.mapToDeviceType() == DeviceType.fan
                   ? Row(
                       children: [
@@ -141,24 +172,47 @@ class _DeviceCardState extends State<DeviceCard> {
                           flex: 4,
                           child: ValueListenableBuilder<double>(
                             valueListenable: valueSlider,
-                            builder: ((context, value, child) {
-                              return Slider(
-                                onChanged: (newValue) {
-                                  valueSlider.value = newValue;
-                                  if (newValue == 0.0) {
-                                    setState(() {
-                                      status = false;
-                                    });
-                                  }
+                            builder: (context, value, child) {
+                              return Consumer(
+                                builder: (context, ref, child) {
+                                  return Slider(
+                                    onChanged: (newValue) {
+                                      valueSlider.value = newValue;
+                                      if (newValue == 0.0) {
+                                        statusNotifier.value = false;
+                                      }
+                                    },
+                                    value: value,
+                                    onChangeStart: (value) {},
+                                    onChangeEnd: (value) async {
+                                      await ref
+                                          .read(actionDeviceProvider)
+                                          .doFanAction(
+                                              nameFan: widget.device.name,
+                                              value: int.parse(
+                                                  value.toStringAsFixed(0)))
+                                          .then((_) {
+                                        Fluttertoast.showToast(
+                                            msg: value == 0.0
+                                                ? "Đã tắt ${widget.device.name}"
+                                                : "Đã chỉnh tốc độ ${widget.device.name} ${value.toStringAsFixed(0)}");
+                                      }).catchError((error, __) {
+                                        AppUtils.logger(error,
+                                            location: runtimeType,
+                                            isError: true);
+                                        Fluttertoast.showToast(
+                                            msg:
+                                                "Chỉnh tốc độ ${widget.device.name} ${value.toStringAsFixed(0)} không thành công,\nvui lòng thử lại");
+                                      });
+                                    },
+                                    divisions: 3,
+                                    max: 50,
+                                    min: 0,
+                                    label: value.toStringAsFixed(0),
+                                  );
                                 },
-                                value: value,
-                                onChangeStart: (value) {},
-                                onChangeEnd: (value) {},
-                                divisions: 3,
-                                max: 1,
-                                label: value.toStringAsFixed(2),
                               );
-                            }),
+                            },
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -230,7 +284,7 @@ class _DeviceCardState extends State<DeviceCard> {
                       ],
                     ),
             ),
-          ),
+          )
         ],
       ),
     );

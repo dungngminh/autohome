@@ -15,10 +15,9 @@ final socketProvider = AutoDisposeStreamProvider((ref) {
   ref.watch(webSockerProvider).sink.add(
       jsonEncode(<String, String>{"group": "group_dht11", "status": "join"}));
   final sub = channelProvider.listen(
-    (data) {
-    },
+    (data) {},
     onError: (_, stack) {
-      print("error");
+      // print("error");
     },
     onDone: () async {
       log("on done");

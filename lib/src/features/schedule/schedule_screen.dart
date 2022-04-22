@@ -7,7 +7,7 @@ import 'package:autohome/src/features/schedule/controller/schedule_controller.da
 import 'package:autohome/src/model/schedule.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class ScheduleScreen extends ConsumerWidget {
@@ -19,21 +19,41 @@ class ScheduleScreen extends ConsumerWidget {
       scheduleSetupProvider,
       (_, next) {
         next.whenOrNull(error: (errorMessage) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(errorMessage ?? "cac"),
-            ),
-          );
+          Fluttertoast.showToast(msg: errorMessage ?? "null");
         }, loading: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Dang them lich"),
-            ),
-          );
+          showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (context) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      CircularProgressIndicator(
+                        color: Palette.mainBlue,
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        "Đang thêm lịch...",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              });
+        }, loaded: (data) {
+          Navigator.of(context)
+            ..pop()
+            ..pop(context);
+          Fluttertoast.showToast(msg: "Đã set lịch thành công");
         });
       },
     );
-    final state = ref.watch(scheduleSetupProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Lịch trình"),
@@ -48,7 +68,10 @@ class ScheduleScreen extends ConsumerWidget {
                   ref.watch(deviceProvider).whenOrNull(loaded: (data) {
                     deviceName.addAll(data.map((device) => device.name));
                   });
+
                   final listStatus = <String>['On', 'Off'];
+                  final TextEditingController clockController =
+                      TextEditingController();
                   return AlertDialog(
                     title: const Text(
                       "Thêm lịch trình",
@@ -61,72 +84,100 @@ class ScheduleScreen extends ConsumerWidget {
                     content: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Consumer(builder: (context, ref, child) {
-                          return DropdownButton<String>(
-                            items: deviceName
-                                .map((e) => DropdownMenuItem<String>(
-                                      child: Text(e),
-                                      value: e,
-                                    ))
-                                .toList(),
-                            onChanged: (String? value) {
-                              ref.read(deviceNameProvider.notifier).state =
-                                  value!;
-                              log(ref.watch(deviceNameProvider));
-                            },
-                            value: ref.watch(deviceNameProvider),
-                          );
-                        }),
-                        Consumer(builder: (context, ref, child) {
-                          return DropdownButton<String>(
-                            items: listStatus
-                                .map((e) => DropdownMenuItem<String>(
-                                      child: Text(e),
-                                      value: e,
-                                    ))
-                                .toList(),
-                            onChanged: (String? value) {
-                              ref.read(deviceStatusProvider.notifier).state =
-                                  value!;
-                            },
-                            value: ref.watch(deviceStatusProvider),
-                          );
-                        }),
-                        TextField(
-                          readOnly:
-                              true, //set it true, so that user will not able to edit text
-                          onTap: () async {
-                            TimeOfDay? pickedTime = await showTimePicker(
-                              initialTime: TimeOfDay.now(),
-                              context: context,
+                        ListTile(
+                          leading: const Icon(
+                            PhosphorIcons.lightbulbBold,
+                            color: Palette.mainBlue,
+                          ),
+                          title: Consumer(builder: (context, ref, child) {
+                            return DropdownButton<String>(
+                              isExpanded: true,
+                              items: deviceName
+                                  .map((e) => DropdownMenuItem<String>(
+                                        child: Text(e),
+                                        value: e,
+                                      ))
+                                  .toList(),
+                              onChanged: (String? value) {
+                                ref.read(deviceNameProvider.notifier).state =
+                                    value!;
+                                log(ref.watch(deviceNameProvider));
+                              },
+                              value: ref.watch(deviceNameProvider),
                             );
-
-                            if (pickedTime != null) {
-                              print(
-                                  pickedTime.format(context)); //output 10:51 PM
-                              DateTime parsedTime = DateFormat.jm()
-                                  .parse(pickedTime.format(context).toString());
-                              //converting to DateTime so that we can further format on different pattern.
-                              print(
-                                  parsedTime); //output 1970-01-01 22:53:00.000
-                              String tempTime =
-                                  DateFormat('mm:HH').format(parsedTime);
-                              final temp = tempTime.split(':');
-                              String formattedTime = temp[0];
-                              ':' + temp[1];
-                              log(formattedTime); //output 14:59:00
-                              //DateFormat() is from intl package, you can format the time on any pattern you need.
-
-                            } else {
-                              print("Time is not selected");
-                            }
-                          },
+                          }),
+                        ),
+                        ListTile(
+                          leading: const Icon(
+                            PhosphorIcons.lightningBold,
+                            color: Palette.mainBlue,
+                          ),
+                          title: Consumer(builder: (context, ref, child) {
+                            return DropdownButton<String>(
+                              isExpanded: true,
+                              items: listStatus
+                                  .map((e) => DropdownMenuItem<String>(
+                                        child: Text(e),
+                                        value: e,
+                                      ))
+                                  .toList(),
+                              onChanged: (String? value) {
+                                ref.read(deviceStatusProvider.notifier).state =
+                                    value!;
+                              },
+                              value: ref.watch(deviceStatusProvider),
+                            );
+                          }),
+                        ),
+                        ListTile(
+                          leading: const Icon(
+                            PhosphorIcons.clockBold,
+                            color: Palette.mainBlue,
+                          ),
+                          title: TextField(
+                            controller: clockController,
+                            decoration:
+                                const InputDecoration(hintText: 'Thời gian'),
+                            readOnly: true,
+                            onTap: () async {
+                              TimeOfDay? pickedTime = await showTimePicker(
+                                initialTime: TimeOfDay.now(),
+                                context: context,
+                              );
+                              if (pickedTime != null) {
+                                // log(pickedTime.toString());
+                                clockController.text =
+                                    pickedTime.hour.toString() +
+                                        ":" +
+                                        pickedTime.minute.toString();
+                              } else {
+                                log("Time is not selected");
+                              }
+                            },
+                          ),
                         )
                       ],
                     ),
                     actions: [
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          if (clockController.text.isNotEmpty) {
+                            final nameDevice =
+                                ref.read(deviceNameProvider.notifier).state;
+                            final statusDevice =
+                                ref.read(deviceStatusProvider.notifier).state;
+                           
+                            await ref
+                                .read(scheduleSetupProvider.notifier)
+                                .addSchedule(
+                                  Schedule(
+                                    device: nameDevice,
+                                    deviceStatus: statusDevice,
+                                    timeSetting: clockController.text,
+                                  ),
+                                );
+                          }
+                        },
                         child: const Text(
                           "Thêm",
                           style: TextStyle(
@@ -137,6 +188,7 @@ class ScheduleScreen extends ConsumerWidget {
                       TextButton(
                         onPressed: () {
                           Navigator.pop(context);
+                          clockController.clear();
                         },
                         child: const Text(
                           "Hủy",
@@ -152,7 +204,7 @@ class ScheduleScreen extends ConsumerWidget {
         ],
       ),
       body: Center(
-        child: state.whenOrNull(
+        child: ref.watch(scheduleSetupProvider).whenOrNull(
           loaded: (data) {
             return data.isEmpty
                 ? const Text("No schedule here")
@@ -161,6 +213,15 @@ class ScheduleScreen extends ConsumerWidget {
                     itemBuilder: (context, index) {
                       return ListTile(
                         title: Text(data[index].device),
+                        leading: const Icon(
+                          PhosphorIcons.lightbulbBold,
+                          color: Palette.mainBlue,
+                        ),
+                        subtitle: Text(
+                          data[index].deviceStatus +
+                              " lúc " +
+                              data[index].timeSetting,
+                        ),
                       );
                     },
                   );

@@ -17,7 +17,8 @@ class AddDeviceScreen extends StatelessWidget {
         child: ListView(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -70,27 +71,39 @@ class _AddDevicePanelState extends ConsumerState<AddDevicePanel> {
   final _deviceTypeMapping = <String, String>{'Led': 'Đèn', 'Motor': 'Quạt'};
   final _deviceStatusMapping = <String, String>{'on': 'Bật', 'off': 'Tắt'};
   late String _selectedDeviceType;
-  late String _stringImage;
   late String _selectedStatus;
 
   late final TextEditingController _nameDeviceController;
   late final TextEditingController _locationController;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  late Widget iconWidget;
   @override
   void initState() {
     super.initState();
     _selectedDeviceType = _deviceTypeMapping.entries.first.value;
-    _stringImage = _selectedDeviceType;
     _selectedStatus = _deviceStatusMapping.entries.first.value;
     _nameDeviceController = TextEditingController();
     _locationController = TextEditingController();
+    iconWidget = const Icon(
+      PhosphorIcons.lightbulbBold,
+      color: Palette.mainBlue,
+      size: 100,
+      key: ValueKey('Đèn'),
+    );
   }
 
   void onDeviceTypeChooseAction(String? newValue) {
     if (newValue is String) {
       setState(() {
         _selectedDeviceType = newValue;
-        _stringImage = newValue;
+        iconWidget = Icon(
+          newValue == "Đèn"
+              ? PhosphorIcons.lightbulbBold
+              : PhosphorIcons.windBold,
+          color: Palette.mainBlue,
+          size: 100,
+          key: ValueKey(newValue),
+        );
       });
     }
   }
@@ -139,84 +152,96 @@ class _AddDevicePanelState extends ConsumerState<AddDevicePanel> {
           children: [
             Expanded(
               flex: 5,
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      controller: _nameDeviceController,
-                      decoration: const InputDecoration(
-                        hintText: "Tên thiết bị",
-                        border: OutlineInputBorder(),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: _nameDeviceController,
+                        decoration: const InputDecoration(
+                          hintText: "Tên thiết bị",
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Nhập giá trị';
+                          } else {
+                            return null;
+                          }
+                        },
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Nhập giá trị';
-                        } else {
-                          return null;
-                        }
-                      },
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    DropdownButtonFormField<String>(
-                      value: _selectedDeviceType,
-                      decoration: const InputDecoration(
-                        hintText: "Loại thiết bị",
-                        border: OutlineInputBorder(),
+                      const SizedBox(
+                        height: 8,
                       ),
-                      items: _deviceTypeMapping.values
-                          .map<DropdownMenuItem<String>>(((e) {
-                        return DropdownMenuItem(
-                          child: Text(e),
-                          value: e,
-                        );
-                      })).toList(),
-                      onChanged: onDeviceTypeChooseAction,
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    TextFormField(
-                      controller: _locationController,
-                      decoration: const InputDecoration(
-                        hintText: "Nơi đặt thiết bị",
-                        border: OutlineInputBorder(),
+                      DropdownButtonFormField<String>(
+                        value: _selectedDeviceType,
+                        decoration: const InputDecoration(
+                          hintText: "Loại thiết bị",
+                          border: OutlineInputBorder(),
+                        ),
+                        items: _deviceTypeMapping.values
+                            .map<DropdownMenuItem<String>>(((e) {
+                          return DropdownMenuItem(
+                            child: Text(e),
+                            value: e,
+                          );
+                        })).toList(),
+                        onChanged: onDeviceTypeChooseAction,
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Nhập giá trị';
-                        } else {
-                          return null;
-                        }
-                      },
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    DropdownButtonFormField<String>(
-                      value: _selectedStatus,
-                      decoration: const InputDecoration(
-                        hintText: "Trạng thái",
-                        border: OutlineInputBorder(),
+                      const SizedBox(
+                        height: 8,
                       ),
-                      items: _deviceStatusMapping.values
-                          .map<DropdownMenuItem<String>>(((e) {
-                        return DropdownMenuItem(
-                          child: Text(e),
-                          value: e,
-                        );
-                      })).toList(),
-                      onChanged: onStatusChooseAction,
-                    ),
-                  ],
+                      TextFormField(
+                        controller: _locationController,
+                        decoration: const InputDecoration(
+                          hintText: "Nơi đặt thiết bị",
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Nhập giá trị';
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      DropdownButtonFormField<String>(
+                        value: _selectedStatus,
+                        decoration: const InputDecoration(
+                          hintText: "Trạng thái",
+                          border: OutlineInputBorder(),
+                        ),
+                        items: _deviceStatusMapping.values
+                            .map<DropdownMenuItem<String>>(((e) {
+                          return DropdownMenuItem(
+                            child: Text(e),
+                            value: e,
+                          );
+                        })).toList(),
+                        onChanged: onStatusChooseAction,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
             Expanded(
               flex: 3,
-              child: Text(_stringImage),
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return ScaleTransition(
+                    scale: animation,
+                    child: child,
+                  );
+                },
+                child: iconWidget,
+              ),
             ),
           ],
         ),

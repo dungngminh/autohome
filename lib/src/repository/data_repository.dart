@@ -27,26 +27,48 @@ class DataRepository {
     }
   }
 
-  Future<String> doDeviceAction(
-      {required String deviceType,
-      required String name,
-      required String action}) async {
+  Future<Map<String, double>> getHumiTempData() async {
+    try {
+      final response = await baseApi.get(path: '/dht11');
+      return <String, double>{
+        'temp': double.parse((response.data as Iterable).elementAt(0)['temp']),
+        'humi': double.parse((response.data as Iterable).elementAt(0)['hum']),
+      };
+    } catch (e) {
+      throw Exception("get data humi temp fail");
+      // rethrow;
+    }
+  }
+
+  Future<String> doLedAction(
+      {required String name, required String action}) async {
     try {
       final response =
-          await baseApi.get(path: "/$deviceType", queryParams: <String, String>{
+          await baseApi.get(path: "/led", queryParams: <String, String>{
         "ledname": name,
         "ledstatus": action,
       });
+
       return response.data;
     } catch (e) {
       throw Exception();
     }
   }
 
+  Future<void> doFanAction({required String name, required int value}) async {
+    try {
+      final formData =
+          FormData.fromMap(<String, dynamic>{'name': name, 'value': value});
+      log(formData.toString());
+      await baseApi.post(path: '/motor', data: formData);
+    } catch (e) {
+      throw Exception("happy add device");
+    }
+  }
+
   Future<void> addDevice({required AddDeviceParams params}) async {
     try {
       final formData = FormData.fromMap(params.toJson());
-      log(formData.toString());
       await baseApi.post(path: '/device', data: formData);
     } catch (e) {
       throw Exception("happy add device");
@@ -56,6 +78,7 @@ class DataRepository {
   Future<void> addSchedule({required Schedule schedule}) async {
     try {
       final formData = FormData.fromMap(schedule.toJson());
+      await baseApi.post(path: '/schedule/cron', data: formData);
     } catch (e) {
       throw Exception("Happy add schedule");
     }

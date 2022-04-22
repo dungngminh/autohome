@@ -160,7 +160,7 @@ class _$_AddDeviceParams implements _AddDeviceParams {
       required this.status});
 
   factory _$_AddDeviceParams.fromJson(Map<String, dynamic> json) =>
-      _$$_AddDeviceParamsFromJson(json);
+      _$$AddDeviceParamsFromJson(json);
 
   @override
   final String name;
@@ -202,7 +202,7 @@ class _$_AddDeviceParams implements _AddDeviceParams {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_AddDeviceParamsToJson(this);
+    return _$$AddDeviceParamsToJson(this);
   }
 }
 

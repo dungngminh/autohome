@@ -1,17 +1,15 @@
 import 'package:autohome/src/features/home_page/modules/add_device_screen/add_device_screen.dart';
-import 'package:autohome/src/features/home_page/home_screen.dart';
 import 'package:autohome/src/features/main_screen/main_screen.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class App extends StatelessWidget {
-  App({Key? key}) : super(key: key);
+  const App({Key? key}) : super(key: key);
 
-  final _router = GoRouter(routes: [
-    GoRoute(path: "/", builder: (context, state) => const MainScreen()),
-    GoRoute(path: "/add", builder: (context, state) => const AddDeviceScreen()),
-  ]);
+  // final _router = GoRouter(routes: [
+  //   GoRoute(path: "/", builder: (context, state) => const MainScreen()),
+  //   GoRoute(path: "/add", builder: (context, state) => const AddDeviceScreen()),
+  // ]);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +17,12 @@ class App extends StatelessWidget {
       useInheritedMediaQuery: true,
       locale: DevicePreview.locale(context),
       debugShowCheckedModeBanner: false,
-      builder: DevicePreview.appBuilder,
+      builder: (context, child) {
+        DevicePreview.appBuilder(context, child);
+        return MediaQuery(
+            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+            child: child!);
+      },
       theme: ThemeData(fontFamily: "SF_Pro_Display"),
       title: "Autohome",
       routes: <String, WidgetBuilder>{

@@ -14,7 +14,7 @@ void main() {
   runApp(DevicePreview(
     enabled: Platform.isWindows,
     builder: (context) => ProviderScope(
-        observers: [RiverpodLogger()], child: App()), // Wrap your app
+        observers: [RiverpodLogger()], child: const App()), // Wrap your app
   ));
   // runApp(const App());
 }

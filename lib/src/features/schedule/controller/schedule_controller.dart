@@ -4,7 +4,8 @@ import 'package:autohome/src/model/schedule.dart';
 import 'package:autohome/src/repository/data_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final deviceStatusProvider = AutoDisposeStateProvider<String>((ref) => 'On');
+final deviceStatusProvider = AutoDisposeStateProvider<String>((ref) => 'On',
+    name: 'device status provider');
 
 final deviceNameProvider = AutoDisposeStateProvider<String>((ref) {
   final List<String> deviceNames = [];
@@ -12,7 +13,7 @@ final deviceNameProvider = AutoDisposeStateProvider<String>((ref) {
     deviceNames.addAll(data.map((device) => device.name));
   });
   return deviceNames.first;
-});
+}, name: 'device name provider');
 
 final scheduleSetupProvider = AutoDisposeStateNotifierProvider<
     ScheduleSetupController, BaseState<List<Schedule>>>((ref) {
@@ -35,7 +36,11 @@ class ScheduleSetupController extends StateNotifier<BaseState<List<Schedule>>> {
       oldList.addAll(data);
     });
     state = const BaseState.loading();
-    await dataRepository.addSchedule(schedule: schedule).then((_) {
+    final temp = schedule.timeSetting.split(':');
+    String formattedTime = temp[1] + ':' + temp[0];
+    await dataRepository
+        .addSchedule(schedule: schedule.copyWith(timeSetting: formattedTime))
+        .then((_) {
       oldList.add(schedule);
       state = BaseState.loaded(oldList);
     }).catchError((err, __) {

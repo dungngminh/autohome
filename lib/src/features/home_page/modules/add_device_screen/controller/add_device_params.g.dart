@@ -6,7 +6,7 @@ part of 'add_device_params.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_AddDeviceParams _$$_AddDeviceParamsFromJson(Map<String, dynamic> json) =>
+_$_AddDeviceParams _$$AddDeviceParamsFromJson(Map<String, dynamic> json) =>
     _$_AddDeviceParams(
       name: json['name'] as String,
       type: json['type'] as String,
@@ -14,7 +14,7 @@ _$_AddDeviceParams _$$_AddDeviceParamsFromJson(Map<String, dynamic> json) =>
       status: json['status'] as String,
     );
 
-Map<String, dynamic> _$$_AddDeviceParamsToJson(_$_AddDeviceParams instance) =>
+Map<String, dynamic> _$$AddDeviceParamsToJson(_$_AddDeviceParams instance) =>
     <String, dynamic>{
       'name': instance.name,
       'type': instance.type,
