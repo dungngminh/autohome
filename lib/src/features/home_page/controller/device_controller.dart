@@ -4,7 +4,7 @@ import 'package:autohome/src/repository/data_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final deviceProvider =
-    AutoDisposeStateNotifierProvider<DeviceController, BaseState<List<Device>>>(
+    StateNotifierProvider<DeviceController, BaseState<List<Device>>>(
         (ref) {
   return DeviceController(dataRepository: ref.watch(dataRepositoryProvider));
 });

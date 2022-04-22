@@ -1,7 +1,18 @@
 import 'package:autohome/src/core/common/base_state.dart';
+import 'package:autohome/src/features/home_page/controller/device_controller.dart';
 import 'package:autohome/src/model/schedule.dart';
 import 'package:autohome/src/repository/data_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final deviceStatusProvider = AutoDisposeStateProvider<String>((ref) => 'On');
+
+final deviceNameProvider = AutoDisposeStateProvider<String>((ref) {
+  final List<String> deviceNames = [];
+  ref.watch(deviceProvider).whenOrNull(loaded: (data) {
+    deviceNames.addAll(data.map((device) => device.name));
+  });
+  return deviceNames.first;
+});
 
 final scheduleSetupProvider = AutoDisposeStateNotifierProvider<
     ScheduleSetupController, BaseState<List<Schedule>>>((ref) {
