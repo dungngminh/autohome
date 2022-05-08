@@ -30,8 +30,8 @@ class _DeviceCardState extends State<DeviceCard> {
 
   @override
   void initState() {
-    statusNotifier = ValueNotifier(widget.device.mapToStatus());
-    if (widget.device.mapToDeviceType() == DeviceType.fan) {
+    statusNotifier = ValueNotifier(widget.device.mapToStatus);
+    if (widget.device.mapToDeviceType == DeviceType.fan) {
       valueSlider = ValueNotifier(20.0);
     } else {
       valueSlider = ValueNotifier(0.0);
@@ -63,9 +63,9 @@ class _DeviceCardState extends State<DeviceCard> {
                 radius: 24,
                 backgroundColor: Palette.elementBlue.withOpacity(0.7),
                 child: Icon(
-                  widget.device.mapToDeviceType() == DeviceType.led
+                  widget.device.mapToDeviceType == DeviceType.led
                       ? PhosphorIcons.lightbulbFill
-                      : (widget.device.mapToDeviceType() == DeviceType.fan
+                      : (widget.device.mapToDeviceType == DeviceType.fan
                           ? PhosphorIcons.wind
                           : PhosphorIcons.lightbulbFilament),
                   color: Palette.mainBlue,
@@ -92,8 +92,7 @@ class _DeviceCardState extends State<DeviceCard> {
                         trackColor: Palette.elementLightGray,
                         activeColor: Palette.mainBlue,
                         onChanged: (value) async {
-                          if (widget.device.mapToDeviceType() ==
-                              DeviceType.fan) {
+                          if (widget.device.mapToDeviceType == DeviceType.fan) {
                             Fluttertoast.showToast(
                               msg: value
                                   ? 'Đang bật ${widget.device.name}'
@@ -173,7 +172,7 @@ class _DeviceCardState extends State<DeviceCard> {
             ignoring: !statusNotifier.value,
             child: Opacity(
               opacity: statusNotifier.value ? 1.0 : 0.6,
-              child: widget.device.mapToDeviceType() == DeviceType.fan
+              child: widget.device.mapToDeviceType == DeviceType.fan
                   ? Row(
                       children: [
                         const Text(
@@ -250,8 +249,7 @@ class _DeviceCardState extends State<DeviceCard> {
                               color: Palette.elementLightGray,
                             ),
                             child: Text(
-                              widget.device.location
-                                  .convertSmallerLocationName(),
+                              widget.device.location.convertSmallerLocationName,
                               style: const TextStyle(
                                 fontSize: 12,
                                 color: Palette.textGray,
@@ -297,8 +295,7 @@ class _DeviceCardState extends State<DeviceCard> {
                               color: Palette.elementLightGray,
                             ),
                             child: Text(
-                              widget.device.location
-                                  .convertSmallerLocationName(),
+                              widget.device.location.convertSmallerLocationName,
                               style: const TextStyle(
                                 fontSize: 12,
                                 color: Palette.textGray,

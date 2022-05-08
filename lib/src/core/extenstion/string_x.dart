@@ -1,5 +1,5 @@
 extension StringX on String {
-  String convertSmallerLocationName() {
+  String get convertSmallerLocationName {
     if (length > 7) {
       String newString = '';
       List<String> splitted = split(' ');

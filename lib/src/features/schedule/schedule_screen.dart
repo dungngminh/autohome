@@ -103,8 +103,8 @@ class ScheduleScreen extends ConsumerWidget {
                                 items: deviceName
                                     .map(
                                       (e) => DropdownMenuItem<String>(
-                                        child: Text(e),
                                         value: e,
+                                        child: Text(e),
                                       ),
                                     )
                                     .toList(),
@@ -130,8 +130,8 @@ class ScheduleScreen extends ConsumerWidget {
                                 items: listStatus
                                     .map(
                                       (e) => DropdownMenuItem<String>(
-                                        child: Text(e),
                                         value: e,
+                                        child: Text(e),
                                       ),
                                     )
                                     .toList(),

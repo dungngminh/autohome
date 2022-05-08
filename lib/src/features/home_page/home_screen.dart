@@ -223,6 +223,7 @@ class _DevicePanelState extends State<DevicePanel> {
               left: 24,
               top: 24,
               bottom: 16,
+              right: 24,
             ),
             itemCount: listRoom.length,
             scrollDirection: Axis.horizontal,

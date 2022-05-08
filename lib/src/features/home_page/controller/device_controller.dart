@@ -9,11 +9,11 @@ final deviceProvider =
 });
 
 class DeviceController extends StateNotifier<BaseState<List<Device>>> {
-  final DataRepository dataRepository;
   DeviceController({required this.dataRepository})
       : super(const BaseState<List<Device>>.initial()) {
     getDataDevice();
   }
+  final DataRepository dataRepository;
 
   Future<void> getDataDevice() async {
     try {

@@ -2,8 +2,8 @@ import 'package:autohome/src/core/enum/enum.dart';
 import 'package:autohome/src/model/device.dart';
 
 const Map<String, DeviceType> deviceTypeMapping = {
-  'Motor': DeviceType.fan,
-  'Led': DeviceType.led
+  'fan': DeviceType.fan,
+  'led': DeviceType.led
 };
 
 const Map<String, bool> statusMapping = {
@@ -16,12 +16,14 @@ const Map<bool, String> actionMapping = {
   false: 'turnon',
 };
 
+
+
 extension DeviceX on Device {
-  DeviceType mapToDeviceType() {
+  DeviceType get mapToDeviceType {
     return deviceTypeMapping[type]!;
   }
 
-  bool mapToStatus() {
+  bool get mapToStatus {
     return statusMapping[status]!;
   }
 }

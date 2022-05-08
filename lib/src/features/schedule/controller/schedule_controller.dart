@@ -29,11 +29,12 @@ final scheduleSetupProvider = AutoDisposeStateNotifierProvider<
 });
 
 class ScheduleSetupController extends StateNotifier<BaseState<List<Schedule>>> {
-  final DataRepository dataRepository;
   ScheduleSetupController({required this.dataRepository})
       : super(const BaseState.initial()) {
     state = const BaseState.loaded([]);
   }
+
+  final DataRepository dataRepository;
 
   ///Input schedule.timeSettings: min:hour:day:month:year , which null time will scheduled by null value
   ///ex: notnull:null

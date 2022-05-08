@@ -11,9 +11,11 @@ final addDeviceProvider =
 });
 
 class AddDeviceController extends StateNotifier<BaseState<String>> {
-  final DataRepository dataRepository;
   AddDeviceController({required this.dataRepository})
       : super(const BaseState.initial());
+  
+  final DataRepository dataRepository;
+
 
   Future<void> addDevice({required AddDeviceParams params}) async {
     try {

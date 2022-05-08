@@ -8,8 +8,9 @@ final actionDeviceProvider = AutoDisposeProvider<StatusDeviceController>((ref) {
 });
 
 class StatusDeviceController {
-  final DataRepository dataRepository;
   StatusDeviceController({required this.dataRepository});
+
+  final DataRepository dataRepository;
 
   Future<void> doLedAction({
     required String nameLed,

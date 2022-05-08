@@ -195,8 +195,8 @@ class _AddDevicePanelState extends ConsumerState<AddDevicePanel> {
                             .map<DropdownMenuItem<String>>(
                           ((e) {
                             return DropdownMenuItem(
-                              child: Text(e),
                               value: e,
+                              child: Text(e),
                             );
                           }),
                         ).toList(),
@@ -232,8 +232,8 @@ class _AddDevicePanelState extends ConsumerState<AddDevicePanel> {
                             .map<DropdownMenuItem<String>>(
                           ((e) {
                             return DropdownMenuItem(
-                              child: Text(e),
                               value: e,
+                              child: Text(e),
                             );
                           }),
                         ).toList(),
@@ -265,7 +265,7 @@ class _AddDevicePanelState extends ConsumerState<AddDevicePanel> {
             color: Palette.mainBlue,
             borderRadius: BorderRadius.circular(20),
             child: InkWell(
-              onTap: () => _addDevice(),
+              onTap: _addDevice,
               borderRadius: BorderRadius.circular(20),
               child: Container(
                 padding: const EdgeInsets.symmetric(

@@ -12,10 +12,11 @@ final dataRepositoryProvider = Provider<DataRepository>((ref) {
 });
 
 class DataRepository {
-  final BaseApi baseApi;
 
   DataRepository({required this.baseApi});
 
+  final BaseApi baseApi;
+  
   Future<List<Device>> getDeviceData() async {
     try {
       final response = await baseApi.get(path: '/device');
