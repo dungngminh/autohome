@@ -6,7 +6,8 @@ class ScriptsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("Scripts Screen")),
-        body: const Center(child: Text("Scripts screen")));
+      appBar: AppBar(title: const Text('Scripts Screen')),
+      body: const Center(child: Text('Scripts screen')),
+    );
   }
 }

@@ -26,12 +26,14 @@ class AddDeviceScreen extends StatelessWidget {
                     onTap: () => Navigator.pop(context),
                     child: const CircleAvatar(
                       backgroundColor: Palette.elementLightGray,
-                      child: Icon(PhosphorIcons.caretLeftBold,
-                          color: Palette.elementBlack),
+                      child: Icon(
+                        PhosphorIcons.caretLeftBold,
+                        color: Palette.elementBlack,
+                      ),
                     ),
                   ),
                   const Text(
-                    "Thêm thiết bị mới",
+                    'Thêm thiết bị mới',
                     style: TextStyle(
                       color: Palette.textBlack2,
                       fontSize: 22,
@@ -92,12 +94,12 @@ class _AddDevicePanelState extends ConsumerState<AddDevicePanel> {
     );
   }
 
-  void onDeviceTypeChooseAction(String? newValue) {
+  void _onDeviceTypeChooseAction(String? newValue) {
     if (newValue is String) {
       setState(() {
         _selectedDeviceType = newValue;
         iconWidget = Icon(
-          newValue == "Đèn"
+          newValue == 'Đèn'
               ? PhosphorIcons.lightbulbBold
               : PhosphorIcons.windBold,
           color: Palette.mainBlue,
@@ -108,7 +110,7 @@ class _AddDevicePanelState extends ConsumerState<AddDevicePanel> {
     }
   }
 
-  void onStatusChooseAction(String? newValue) {
+  void _onStatusChooseAction(String? newValue) {
     if (newValue is String) {
       setState(() {
         _selectedStatus = newValue;
@@ -124,26 +126,34 @@ class _AddDevicePanelState extends ConsumerState<AddDevicePanel> {
           .firstWhere((key) => _deviceStatusMapping[key] == _selectedStatus);
 
       final params = AddDeviceParams(
-          location: _locationController.text,
-          name: _nameDeviceController.text,
-          status: deviceStatus,
-          type: deviceType);
+        location: _locationController.text,
+        name: _nameDeviceController.text,
+        status: deviceStatus,
+        type: deviceType,
+      );
       ref.read(addDeviceProvider.notifier).addDevice(params: params);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<BaseState<String>>(addDeviceProvider, ((_, state) {
-      state.whenOrNull(error: (errorMessage) {
-        Fluttertoast.showToast(msg: errorMessage!);
-      }, loaded: (message) {
-        Fluttertoast.showToast(msg: message);
-        Navigator.pop(context, true);
-      }, loading: () {
-        Fluttertoast.showToast(msg: "Loading");
-      });
-    }));
+    ref.listen<BaseState<String>>(
+      addDeviceProvider,
+      ((_, state) {
+        state.whenOrNull(
+          error: (errorMessage) {
+            Fluttertoast.showToast(msg: errorMessage!);
+          },
+          loaded: (message) {
+            Fluttertoast.showToast(msg: message);
+            Navigator.pop(context, true);
+          },
+          loading: () {
+            Fluttertoast.showToast(msg: 'Loading');
+          },
+        );
+      }),
+    );
 
     return Column(
       children: [
@@ -161,7 +171,7 @@ class _AddDevicePanelState extends ConsumerState<AddDevicePanel> {
                       TextFormField(
                         controller: _nameDeviceController,
                         decoration: const InputDecoration(
-                          hintText: "Tên thiết bị",
+                          hintText: 'Tên thiết bị',
                           border: OutlineInputBorder(),
                         ),
                         validator: (value) {
@@ -178,17 +188,19 @@ class _AddDevicePanelState extends ConsumerState<AddDevicePanel> {
                       DropdownButtonFormField<String>(
                         value: _selectedDeviceType,
                         decoration: const InputDecoration(
-                          hintText: "Loại thiết bị",
+                          hintText: 'Loại thiết bị',
                           border: OutlineInputBorder(),
                         ),
                         items: _deviceTypeMapping.values
-                            .map<DropdownMenuItem<String>>(((e) {
-                          return DropdownMenuItem(
-                            child: Text(e),
-                            value: e,
-                          );
-                        })).toList(),
-                        onChanged: onDeviceTypeChooseAction,
+                            .map<DropdownMenuItem<String>>(
+                          ((e) {
+                            return DropdownMenuItem(
+                              child: Text(e),
+                              value: e,
+                            );
+                          }),
+                        ).toList(),
+                        onChanged: _onDeviceTypeChooseAction,
                       ),
                       const SizedBox(
                         height: 8,
@@ -196,7 +208,7 @@ class _AddDevicePanelState extends ConsumerState<AddDevicePanel> {
                       TextFormField(
                         controller: _locationController,
                         decoration: const InputDecoration(
-                          hintText: "Nơi đặt thiết bị",
+                          hintText: 'Nơi đặt thiết bị',
                           border: OutlineInputBorder(),
                         ),
                         validator: (value) {
@@ -213,17 +225,19 @@ class _AddDevicePanelState extends ConsumerState<AddDevicePanel> {
                       DropdownButtonFormField<String>(
                         value: _selectedStatus,
                         decoration: const InputDecoration(
-                          hintText: "Trạng thái",
+                          hintText: 'Trạng thái',
                           border: OutlineInputBorder(),
                         ),
                         items: _deviceStatusMapping.values
-                            .map<DropdownMenuItem<String>>(((e) {
-                          return DropdownMenuItem(
-                            child: Text(e),
-                            value: e,
-                          );
-                        })).toList(),
-                        onChanged: onStatusChooseAction,
+                            .map<DropdownMenuItem<String>>(
+                          ((e) {
+                            return DropdownMenuItem(
+                              child: Text(e),
+                              value: e,
+                            );
+                          }),
+                        ).toList(),
+                        onChanged: _onStatusChooseAction,
                       ),
                     ],
                   ),
@@ -269,7 +283,7 @@ class _AddDevicePanelState extends ConsumerState<AddDevicePanel> {
                 ),
                 alignment: Alignment.center,
                 child: const Text(
-                  "Thêm thiết bị mới",
+                  'Thêm thiết bị mới',
                   style: TextStyle(
                     color: Palette.backgroundColor,
                     fontSize: 15,

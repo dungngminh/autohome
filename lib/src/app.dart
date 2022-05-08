@@ -20,11 +20,12 @@ class App extends StatelessWidget {
       builder: (context, child) {
         DevicePreview.appBuilder(context, child);
         return MediaQuery(
-            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-            child: child!);
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child!,
+        );
       },
-      theme: ThemeData(fontFamily: "SF_Pro_Display"),
-      title: "Autohome",
+      theme: ThemeData(fontFamily: 'SF_Pro_Display'),
+      title: 'Autohome',
       routes: <String, WidgetBuilder>{
         '/': (context) => const MainScreen(),
         '/add': (context) => const AddDeviceScreen(),

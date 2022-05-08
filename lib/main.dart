@@ -11,10 +11,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
   // initDependences();
-  runApp(DevicePreview(
-    enabled: Platform.isWindows,
-    builder: (context) => ProviderScope(
-        observers: [RiverpodLogger()], child: const App()), // Wrap your app
-  ));
+  runApp(
+    DevicePreview(
+      enabled: Platform.isWindows,
+      builder: (context) => ProviderScope(
+        observers: [
+          RiverpodLogger(),
+        ],
+        child: const App(),
+      ), // Wrap your app
+    ),
+  );
   // runApp(const App());
 }

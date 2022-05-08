@@ -18,7 +18,7 @@ class DataRepository {
 
   Future<List<Device>> getDeviceData() async {
     try {
-      final response = await baseApi.get(path: "/device");
+      final response = await baseApi.get(path: '/device');
       return (response.data as List<dynamic>)
           .map((e) => Device.fromJson(e))
           .toList();
@@ -35,19 +35,23 @@ class DataRepository {
         'humi': double.parse((response.data as Iterable).elementAt(0)['hum']),
       };
     } catch (e) {
-      throw Exception("get data humi temp fail");
+      throw Exception('get data humi temp fail');
       // rethrow;
     }
   }
 
-  Future<String> doLedAction(
-      {required String name, required String action}) async {
+  Future<String> doLedAction({
+    required String name,
+    required String action,
+  }) async {
     try {
-      final response =
-          await baseApi.get(path: "/led", queryParams: <String, String>{
-        "ledname": name,
-        "ledstatus": action,
-      });
+      final response = await baseApi.get(
+        path: '/led',
+        queryParams: <String, String>{
+          'ledname': name,
+          'ledstatus': action,
+        },
+      );
 
       return response.data;
     } catch (e) {
@@ -62,7 +66,7 @@ class DataRepository {
       log(formData.toString());
       await baseApi.post(path: '/motor', data: formData);
     } catch (e) {
-      throw Exception("happy add device");
+      throw Exception('happy add device');
     }
   }
 
@@ -71,7 +75,7 @@ class DataRepository {
       final formData = FormData.fromMap(params.toJson());
       await baseApi.post(path: '/device', data: formData);
     } catch (e) {
-      throw Exception("happy add device");
+      throw Exception('happy add device');
     }
   }
 
@@ -80,7 +84,7 @@ class DataRepository {
       final formData = FormData.fromMap(schedule.toJson());
       await baseApi.post(path: '/schedule/cron', data: formData);
     } catch (e) {
-      throw Exception("Happy add schedule");
+      throw Exception('Happy add schedule');
     }
   }
 }

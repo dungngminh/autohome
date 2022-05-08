@@ -57,7 +57,7 @@ class _TemperatureAndHumidityCardState
                     ),
                     const SizedBox(width: 16),
                     const Text(
-                      "Nhiệt độ\nvà độ ẩm",
+                      'Nhiệt độ\nvà độ ẩm',
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 18,
@@ -66,38 +66,46 @@ class _TemperatureAndHumidityCardState
                     ),
                   ],
                 ),
-                Consumer(builder: (context, ref, child) {
-                  return ClipOval(
-                    child: Material(
-                      color: Colors.transparent,
-                      child: IconButton(
-                        icon: const Icon(
-                          PhosphorIcons.arrowsClockwise,
-                          color: Palette.mainBlue,
-                          size: 28,
-                        ),
-                        onPressed: () async {
-                          ref.read(humiTempProvider.notifier).getData();
-                          ToastUtils.make(
-                              message: "Đang lấy dữ liệu nhiệt độ và độ ẩm");
-                          await ref
-                              .read(humiTempProvider.notifier)
-                              .getData()
-                              .then((_) {
+                Consumer(
+                  builder: (context, ref, child) {
+                    return ClipOval(
+                      child: Material(
+                        color: Colors.transparent,
+                        child: IconButton(
+                          icon: const Icon(
+                            PhosphorIcons.arrowsClockwise,
+                            color: Palette.mainBlue,
+                            size: 28,
+                          ),
+                          onPressed: () async {
+                            ref.read(humiTempProvider.notifier).getData();
                             ToastUtils.make(
-                                message: "Đã lấy dữ liệu thành công");
-                          }).catchError((error) {
-                            AppUtils.logger(error!,
-                                location: runtimeType, isError: true);
-                            ToastUtils.make(
+                              message: 'Đang lấy dữ liệu nhiệt độ và độ ẩm',
+                            );
+                            await ref
+                                .read(humiTempProvider.notifier)
+                                .getData()
+                                .then((_) {
+                              ToastUtils.make(
+                                message: 'Đã lấy dữ liệu thành công',
+                              );
+                            }).catchError((error) {
+                              AppUtils.logger(
+                                error!,
+                                location: runtimeType,
+                                isError: true,
+                              );
+                              ToastUtils.make(
                                 message:
-                                    "Lấy dữ liệu không thành công, vui lòng thử lại");
-                          });
-                        },
+                                    'Lấy dữ liệu không thành công, vui lòng thử lại',
+                              );
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                  );
-                })
+                    );
+                  },
+                )
               ],
             ),
             Opacity(
@@ -221,107 +229,115 @@ class _TemperatureAndHumidityCardState
             //     ],
             //   );
             // }),
-            Consumer(builder: (context, ref, child) {
-              final state = ref.watch(humiTempProvider);
-              return Row(
-                children: [
-                  const Tooltip(
-                    message: "Nhiệt độ",
-                    child: Icon(
-                      PhosphorIcons.thermometer,
-                      color: Palette.elementGray,
-                      size: 28,
+            Consumer(
+              builder: (context, ref, child) {
+                final state = ref.watch(humiTempProvider);
+                return Row(
+                  children: [
+                    const Tooltip(
+                      message: 'Nhiệt độ',
+                      child: Icon(
+                        PhosphorIcons.thermometer,
+                        color: Palette.elementGray,
+                        size: 28,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  Tooltip(
-                    richMessage: TextSpan(
-                      text: "Nhiệt độ hiện tại là ",
-                      children: [
-                        TextSpan(
-                          text: state.whenOrNull(
+                    const SizedBox(width: 8),
+                    Tooltip(
+                      richMessage: TextSpan(
+                        text: 'Nhiệt độ hiện tại là ',
+                        children: [
+                          TextSpan(
+                            text: state.whenOrNull(
                               error: (err) => 'err°C',
                               loading: () => '...°C',
                               loaded: (data) =>
-                                  data['temp']!.toStringAsFixed(0) + "°C")!,
-                          // text: "${temperature.toStringAsFixed(0)}°C",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w700,
+                                  data['temp']!.toStringAsFixed(0) + '°C',
+                            )!,
+                            // text: "${temperature.toStringAsFixed(0)}°C",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    child: Text(
-                      state.whenOrNull(
+                        ],
+                      ),
+                      child: Text(
+                        state.whenOrNull(
                           error: (err) => 'err°C',
                           loading: () => '...°C',
                           loaded: (data) =>
-                              data['temp']!.toStringAsFixed(0) + "°C")!,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        height: 1.2,
-                        letterSpacing: 0.5,
-                        color: Palette.mainBlue,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 24),
-                  const Tooltip(
-                    message: "Nhiệt độ",
-                    child: Icon(
-                      PhosphorIcons.drop,
-                      color: Palette.elementGray,
-                      size: 28,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Tooltip(
-                    richMessage:
-                        TextSpan(text: "Độ ẩm hiện tại là ", children: [
-                      TextSpan(
-                        text: state.whenOrNull(
-                            error: (err) => 'err°C',
-                            loading: () => '...°C',
-                            loaded: (data) =>
-                                data['humi']!.toStringAsFixed(0))!,
+                              data['temp']!.toStringAsFixed(0) + '°C',
+                        )!,
                         style: const TextStyle(
+                          fontSize: 24,
+                          height: 1.2,
+                          letterSpacing: 0.5,
+                          color: Palette.mainBlue,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                    ]),
-                    child: Text(
-                      state.whenOrNull(
+                    ),
+                    const SizedBox(width: 24),
+                    const Tooltip(
+                      message: 'Nhiệt độ',
+                      child: Icon(
+                        PhosphorIcons.drop,
+                        color: Palette.elementGray,
+                        size: 28,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Tooltip(
+                      richMessage: TextSpan(
+                        text: 'Độ ẩm hiện tại là ',
+                        children: [
+                          TextSpan(
+                            text: state.whenOrNull(
+                              error: (err) => 'err°C',
+                              loading: () => '...°C',
+                              loaded: (data) =>
+                                  data['humi']!.toStringAsFixed(0),
+                            )!,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        state.whenOrNull(
                           error: (err) => 'err°C',
                           loading: () => '...°C',
-                          loaded: (data) => data['humi']!.toStringAsFixed(0))!,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        height: 1.2,
-                        letterSpacing: 0.5,
-                        color: Palette.mainBlue,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
-                  ClipOval(
-                    child: Material(
-                      color: Colors.transparent,
-                      child: IconButton(
-                        tooltip: "Xem thống kê",
-                        icon: const Icon(
-                          PhosphorIcons.chartLine,
+                          loaded: (data) => data['humi']!.toStringAsFixed(0),
+                        )!,
+                        style: const TextStyle(
+                          fontSize: 24,
+                          height: 1.2,
+                          letterSpacing: 0.5,
                           color: Palette.mainBlue,
-                          size: 28,
+                          fontWeight: FontWeight.w700,
                         ),
-                        onPressed: () async {},
                       ),
                     ),
-                  ),
-                ],
-              );
-            })
+                    const Spacer(),
+                    ClipOval(
+                      child: Material(
+                        color: Colors.transparent,
+                        child: IconButton(
+                          tooltip: 'Xem thống kê',
+                          icon: const Icon(
+                            PhosphorIcons.chartLine,
+                            color: Palette.mainBlue,
+                            size: 28,
+                          ),
+                          onPressed: () async {},
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            )
             // Row(
             //   children: [
             //     const Tooltip(

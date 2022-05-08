@@ -84,9 +84,10 @@ class _DeviceCardState extends State<DeviceCard> {
                 ),
               ),
               ValueListenableBuilder<bool>(
-                  valueListenable: statusNotifier,
-                  builder: (context, status, child) {
-                    return Consumer(builder: (context, ref, child) {
+                valueListenable: statusNotifier,
+                builder: (context, status, child) {
+                  return Consumer(
+                    builder: (context, ref, child) {
                       return CupertinoSwitch(
                         trackColor: Palette.elementLightGray,
                         activeColor: Palette.mainBlue,
@@ -94,60 +95,75 @@ class _DeviceCardState extends State<DeviceCard> {
                           if (widget.device.mapToDeviceType() ==
                               DeviceType.fan) {
                             Fluttertoast.showToast(
-                                msg: value
-                                    ? "Đang bật ${widget.device.name}"
-                                    : "Đang tắt ${widget.device.name}");
+                              msg: value
+                                  ? 'Đang bật ${widget.device.name}'
+                                  : 'Đang tắt ${widget.device.name}',
+                            );
                             await ref
                                 .read(actionDeviceProvider)
                                 .doFanAction(
-                                    nameFan: widget.device.name,
-                                    value: value ? 20 : 0)
+                                  nameFan: widget.device.name,
+                                  value: value ? 20 : 0,
+                                )
                                 .then((_) {
                               statusNotifier.value = value;
                               valueSlider.value = value ? 20 : 0;
                               Fluttertoast.showToast(
-                                  msg: value
-                                      ? "Đã bật ${widget.device.name}"
-                                      : "Đã tắt ${widget.device.name}");
+                                msg: value
+                                    ? 'Đã bật ${widget.device.name}'
+                                    : 'Đã tắt ${widget.device.name}',
+                              );
                             }).catchError((error, __) {
-                              AppUtils.logger(error,
-                                  location: runtimeType, isError: true);
+                              AppUtils.logger(
+                                error,
+                                location: runtimeType,
+                                isError: true,
+                              );
                               Fluttertoast.showToast(
                                 msg: value
-                                    ? "Bật ${widget.device.name} không thành công,\nvui lòng thử lại"
-                                    : "Tắt ${widget.device.name} không thành công,\nvui lòng thử lại",
+                                    ? 'Bật ${widget.device.name} không thành công,\nvui lòng thử lại'
+                                    : 'Tắt ${widget.device.name} không thành công,\nvui lòng thử lại',
                               );
                             });
                           } else {
                             Fluttertoast.showToast(
-                                msg: value
-                                    ? "Đang bật ${widget.device.name}"
-                                    : "Đang tắt ${widget.device.name}");
+                              msg: value
+                                  ? 'Đang bật ${widget.device.name}'
+                                  : 'Đang tắt ${widget.device.name}',
+                            );
                             await ref
                                 .read(actionDeviceProvider)
                                 .doLedAction(
-                                    nameLed: widget.device.name, status: status)
+                                  nameLed: widget.device.name,
+                                  status: status,
+                                )
                                 .then((_) {
                               statusNotifier.value = value;
                               Fluttertoast.showToast(
-                                  msg: value
-                                      ? "Đã bật ${widget.device.name}"
-                                      : "Đã tắt ${widget.device.name}");
+                                msg: value
+                                    ? 'Đã bật ${widget.device.name}'
+                                    : 'Đã tắt ${widget.device.name}',
+                              );
                             }).catchError((error, __) {
-                              AppUtils.logger(error,
-                                  location: runtimeType, isError: true);
+                              AppUtils.logger(
+                                error,
+                                location: runtimeType,
+                                isError: true,
+                              );
                               Fluttertoast.showToast(
                                 msg: value
-                                    ? "Bật ${widget.device.name} không thành công,\nvui lòng thử lại"
-                                    : "Tắt ${widget.device.name} không thành công,\nvui lòng thử lại",
+                                    ? 'Bật ${widget.device.name} không thành công,\nvui lòng thử lại'
+                                    : 'Tắt ${widget.device.name} không thành công,\nvui lòng thử lại',
                               );
                             });
                           }
                         },
                         value: status,
                       );
-                    });
-                  }),
+                    },
+                  );
+                },
+              ),
             ],
           ),
           const SizedBox(
@@ -161,7 +177,7 @@ class _DeviceCardState extends State<DeviceCard> {
                   ? Row(
                       children: [
                         const Text(
-                          "Tốc độ",
+                          'Tốc độ',
                           style: TextStyle(
                             color: Palette.textBlack,
                             fontSize: 14,
@@ -188,21 +204,27 @@ class _DeviceCardState extends State<DeviceCard> {
                                       await ref
                                           .read(actionDeviceProvider)
                                           .doFanAction(
-                                              nameFan: widget.device.name,
-                                              value: int.parse(
-                                                  value.toStringAsFixed(0)))
+                                            nameFan: widget.device.name,
+                                            value: int.parse(
+                                              value.toStringAsFixed(0),
+                                            ),
+                                          )
                                           .then((_) {
                                         Fluttertoast.showToast(
-                                            msg: value == 0.0
-                                                ? "Đã tắt ${widget.device.name}"
-                                                : "Đã chỉnh tốc độ ${widget.device.name} ${value.toStringAsFixed(0)}");
+                                          msg: value == 0.0
+                                              ? 'Đã tắt ${widget.device.name}'
+                                              : 'Đã chỉnh tốc độ ${widget.device.name} ${value.toStringAsFixed(0)}',
+                                        );
                                       }).catchError((error, __) {
-                                        AppUtils.logger(error,
-                                            location: runtimeType,
-                                            isError: true);
+                                        AppUtils.logger(
+                                          error,
+                                          location: runtimeType,
+                                          isError: true,
+                                        );
                                         Fluttertoast.showToast(
-                                            msg:
-                                                "Chỉnh tốc độ ${widget.device.name} ${value.toStringAsFixed(0)} không thành công,\nvui lòng thử lại");
+                                          msg:
+                                              'Chỉnh tốc độ ${widget.device.name} ${value.toStringAsFixed(0)} không thành công,\nvui lòng thử lại',
+                                        );
                                       });
                                     },
                                     divisions: 3,
@@ -220,7 +242,9 @@ class _DeviceCardState extends State<DeviceCard> {
                           color: Colors.transparent,
                           child: Ink(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 12),
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(32),
                               color: Palette.elementLightGray,
@@ -241,7 +265,7 @@ class _DeviceCardState extends State<DeviceCard> {
                   : Row(
                       children: [
                         const Text(
-                          "Màu sắc",
+                          'Màu sắc',
                           style: TextStyle(
                             color: Palette.textBlack,
                             fontSize: 14,
@@ -265,7 +289,9 @@ class _DeviceCardState extends State<DeviceCard> {
                           color: Colors.transparent,
                           child: Ink(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 12),
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(32),
                               color: Palette.elementLightGray,

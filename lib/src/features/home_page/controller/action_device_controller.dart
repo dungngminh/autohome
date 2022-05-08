@@ -11,8 +11,10 @@ class StatusDeviceController {
   final DataRepository dataRepository;
   StatusDeviceController({required this.dataRepository});
 
-  Future<void> doLedAction(
-      {required String nameLed, required bool status}) async {
+  Future<void> doLedAction({
+    required String nameLed,
+    required bool status,
+  }) async {
     try {
       await dataRepository.doLedAction(
         action: actionMapping[status]!,
@@ -23,8 +25,10 @@ class StatusDeviceController {
     }
   }
 
-  Future<void> doFanAction(
-      {required String nameFan, required int value}) async {
+  Future<void> doFanAction({
+    required String nameFan,
+    required int value,
+  }) async {
     try {
       await dataRepository.doFanAction(
         name: nameFan,

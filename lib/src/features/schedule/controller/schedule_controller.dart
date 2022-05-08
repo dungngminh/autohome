@@ -4,16 +4,23 @@ import 'package:autohome/src/model/schedule.dart';
 import 'package:autohome/src/repository/data_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final deviceStatusProvider = AutoDisposeStateProvider<String>((ref) => 'On',
-    name: 'device status provider');
+final deviceStatusProvider = AutoDisposeStateProvider<String>(
+  (ref) => 'On',
+  name: 'device status provider',
+);
 
-final deviceNameProvider = AutoDisposeStateProvider<String>((ref) {
-  final List<String> deviceNames = [];
-  ref.watch(deviceProvider).whenOrNull(loaded: (data) {
-    deviceNames.addAll(data.map((device) => device.name));
-  });
-  return deviceNames.first;
-}, name: 'device name provider');
+final deviceNameProvider = AutoDisposeStateProvider<String>(
+  (ref) {
+    final List<String> deviceNames = [];
+    ref.watch(deviceProvider).whenOrNull(
+      loaded: (data) {
+        deviceNames.addAll(data.map((device) => device.name));
+      },
+    );
+    return deviceNames.first;
+  },
+  name: 'device name provider',
+);
 
 final scheduleSetupProvider = AutoDisposeStateNotifierProvider<
     ScheduleSetupController, BaseState<List<Schedule>>>((ref) {
@@ -32,9 +39,11 @@ class ScheduleSetupController extends StateNotifier<BaseState<List<Schedule>>> {
   ///ex: notnull:null
   Future<void> addSchedule(Schedule schedule) async {
     var oldList = <Schedule>[];
-    state.whenOrNull(loaded: (data) {
-      oldList.addAll(data);
-    });
+    state.whenOrNull(
+      loaded: (data) {
+        oldList.addAll(data);
+      },
+    );
     state = const BaseState.loading();
     final temp = schedule.timeSetting.split(':');
     String formattedTime = temp[1] + ':' + temp[0];

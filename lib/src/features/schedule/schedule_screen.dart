@@ -18,10 +18,12 @@ class ScheduleScreen extends ConsumerWidget {
     ref.listen<BaseState<List<Schedule>>>(
       scheduleSetupProvider,
       (_, next) {
-        next.whenOrNull(error: (errorMessage) {
-          Fluttertoast.showToast(msg: errorMessage ?? "null");
-        }, loading: () {
-          showDialog(
+        next.whenOrNull(
+          error: (errorMessage) {
+            Fluttertoast.showToast(msg: errorMessage ?? 'null');
+          },
+          loading: () {
+            showDialog(
               barrierDismissible: false,
               context: context,
               builder: (context) {
@@ -36,7 +38,7 @@ class ScheduleScreen extends ConsumerWidget {
                         height: 15,
                       ),
                       Text(
-                        "Đang thêm lịch...",
+                        'Đang thêm lịch...',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
@@ -45,18 +47,21 @@ class ScheduleScreen extends ConsumerWidget {
                     ],
                   ),
                 );
-              });
-        }, loaded: (data) {
-          Navigator.of(context)
-            ..pop()
-            ..pop(context);
-          Fluttertoast.showToast(msg: "Đã set lịch thành công");
-        });
+              },
+            );
+          },
+          loaded: (data) {
+            Navigator.of(context)
+              ..pop()
+              ..pop(context);
+            Fluttertoast.showToast(msg: 'Đã set lịch thành công');
+          },
+        );
       },
     );
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Lịch trình"),
+        title: const Text('Lịch trình'),
         actions: [
           IconButton(
             icon: const Icon(PhosphorIcons.plusBold),
@@ -65,16 +70,18 @@ class ScheduleScreen extends ConsumerWidget {
                 context: context,
                 builder: (context) {
                   List<String> deviceName = [];
-                  ref.watch(deviceProvider).whenOrNull(loaded: (data) {
-                    deviceName.addAll(data.map((device) => device.name));
-                  });
+                  ref.watch(deviceProvider).whenOrNull(
+                    loaded: (data) {
+                      deviceName.addAll(data.map((device) => device.name));
+                    },
+                  );
 
                   final listStatus = <String>['On', 'Off'];
                   final TextEditingController clockController =
                       TextEditingController();
                   return AlertDialog(
                     title: const Text(
-                      "Thêm lịch trình",
+                      'Thêm lịch trình',
                       style: TextStyle(
                         color: Palette.mainBlue,
                         fontWeight: FontWeight.w700,
@@ -89,45 +96,54 @@ class ScheduleScreen extends ConsumerWidget {
                             PhosphorIcons.lightbulbBold,
                             color: Palette.mainBlue,
                           ),
-                          title: Consumer(builder: (context, ref, child) {
-                            return DropdownButton<String>(
-                              isExpanded: true,
-                              items: deviceName
-                                  .map((e) => DropdownMenuItem<String>(
+                          title: Consumer(
+                            builder: (context, ref, child) {
+                              return DropdownButton<String>(
+                                isExpanded: true,
+                                items: deviceName
+                                    .map(
+                                      (e) => DropdownMenuItem<String>(
                                         child: Text(e),
                                         value: e,
-                                      ))
-                                  .toList(),
-                              onChanged: (String? value) {
-                                ref.read(deviceNameProvider.notifier).state =
-                                    value!;
-                                log(ref.watch(deviceNameProvider));
-                              },
-                              value: ref.watch(deviceNameProvider),
-                            );
-                          }),
+                                      ),
+                                    )
+                                    .toList(),
+                                onChanged: (String? value) {
+                                  ref.read(deviceNameProvider.notifier).state =
+                                      value!;
+                                  log(ref.watch(deviceNameProvider));
+                                },
+                                value: ref.watch(deviceNameProvider),
+                              );
+                            },
+                          ),
                         ),
                         ListTile(
                           leading: const Icon(
                             PhosphorIcons.lightningBold,
                             color: Palette.mainBlue,
                           ),
-                          title: Consumer(builder: (context, ref, child) {
-                            return DropdownButton<String>(
-                              isExpanded: true,
-                              items: listStatus
-                                  .map((e) => DropdownMenuItem<String>(
+                          title: Consumer(
+                            builder: (context, ref, child) {
+                              return DropdownButton<String>(
+                                isExpanded: true,
+                                items: listStatus
+                                    .map(
+                                      (e) => DropdownMenuItem<String>(
                                         child: Text(e),
                                         value: e,
-                                      ))
-                                  .toList(),
-                              onChanged: (String? value) {
-                                ref.read(deviceStatusProvider.notifier).state =
-                                    value!;
-                              },
-                              value: ref.watch(deviceStatusProvider),
-                            );
-                          }),
+                                      ),
+                                    )
+                                    .toList(),
+                                onChanged: (String? value) {
+                                  ref
+                                      .read(deviceStatusProvider.notifier)
+                                      .state = value!;
+                                },
+                                value: ref.watch(deviceStatusProvider),
+                              );
+                            },
+                          ),
                         ),
                         ListTile(
                           leading: const Icon(
@@ -148,10 +164,10 @@ class ScheduleScreen extends ConsumerWidget {
                                 // log(pickedTime.toString());
                                 clockController.text =
                                     pickedTime.hour.toString() +
-                                        ":" +
+                                        ':' +
                                         pickedTime.minute.toString();
                               } else {
-                                log("Time is not selected");
+                                log('Time is not selected');
                               }
                             },
                           ),
@@ -166,7 +182,7 @@ class ScheduleScreen extends ConsumerWidget {
                                 ref.read(deviceNameProvider.notifier).state;
                             final statusDevice =
                                 ref.read(deviceStatusProvider.notifier).state;
-                           
+
                             await ref
                                 .read(scheduleSetupProvider.notifier)
                                 .addSchedule(
@@ -179,10 +195,11 @@ class ScheduleScreen extends ConsumerWidget {
                           }
                         },
                         child: const Text(
-                          "Thêm",
+                          'Thêm',
                           style: TextStyle(
-                              color: Palette.mainBlue,
-                              fontWeight: FontWeight.w600),
+                            color: Palette.mainBlue,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                       TextButton(
@@ -191,7 +208,7 @@ class ScheduleScreen extends ConsumerWidget {
                           clockController.clear();
                         },
                         child: const Text(
-                          "Hủy",
+                          'Hủy',
                           style: TextStyle(color: Palette.mainBlue),
                         ),
                       )
@@ -207,7 +224,7 @@ class ScheduleScreen extends ConsumerWidget {
         child: ref.watch(scheduleSetupProvider).whenOrNull(
           loaded: (data) {
             return data.isEmpty
-                ? const Text("No schedule here")
+                ? const Text('No schedule here')
                 : ListView.builder(
                     itemCount: data.length,
                     itemBuilder: (context, index) {
@@ -219,7 +236,7 @@ class ScheduleScreen extends ConsumerWidget {
                         ),
                         subtitle: Text(
                           data[index].deviceStatus +
-                              " lúc " +
+                              ' lúc ' +
                               data[index].timeSetting,
                         ),
                       );

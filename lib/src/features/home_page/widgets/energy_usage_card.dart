@@ -57,7 +57,7 @@ class _EnergyUsageCardState extends State<EnergyUsageCard> {
                     ),
                     SizedBox(width: 16),
                     Text(
-                      "Thống kê\ntiêu thụ điện",
+                      'Thống kê\ntiêu thụ điện',
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 18,
@@ -103,7 +103,7 @@ class _EnergyUsageCardState extends State<EnergyUsageCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        "Hôm nay",
+                        'Hôm nay',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
@@ -118,7 +118,7 @@ class _EnergyUsageCardState extends State<EnergyUsageCard> {
                             color: Palette.backgroundColor,
                           ),
                           Text(
-                            "30.7 kWh",
+                            '30.7 kWh',
                             style: TextStyle(
                               fontSize: 18,
                               color: Palette.backgroundColor,
@@ -133,7 +133,7 @@ class _EnergyUsageCardState extends State<EnergyUsageCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        "Tháng này",
+                        'Tháng này',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
@@ -148,7 +148,7 @@ class _EnergyUsageCardState extends State<EnergyUsageCard> {
                             color: Palette.backgroundColor,
                           ),
                           Text(
-                            "235.37 kWh",
+                            '235.37 kWh',
                             style: TextStyle(
                               fontSize: 18,
                               color: Palette.backgroundColor,

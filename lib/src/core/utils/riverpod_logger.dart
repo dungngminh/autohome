@@ -10,20 +10,22 @@ class RiverpodLogger extends ProviderObserver {
     Object? newValue,
     ProviderContainer container,
   ) {
-    log('''
+    log(
+      '''
 {
   "provider": "${provider.name ?? provider.runtimeType}",
   "newValue": "$newValue"
-}''');
+}''',
+    );
   }
 
   @override
   void didDisposeProvider(ProviderBase provider, ProviderContainer containers) {
-    log('''
+    log(
+      '''
 {
   "Dispose": "${provider.name ?? provider.runtimeType}",
-}''');
+}''',
+    );
   }
-
-  
 }

@@ -13,14 +13,15 @@ final socketProvider = AutoDisposeStreamProvider((ref) {
   var isSubControlError = false;
 
   ref.watch(webSockerProvider).sink.add(
-      jsonEncode(<String, String>{"group": "group_dht11", "status": "join"}));
+        jsonEncode(<String, String>{'group': 'group_dht11', 'status': 'join'}),
+      );
   final sub = channelProvider.listen(
     (data) {},
     onError: (_, stack) {
       // print("error");
     },
     onDone: () async {
-      log("on done");
+      log('on done');
       isSubControlError = true;
       await Future.delayed(const Duration(seconds: 10));
       ref.container.refresh(webSockerProvider);

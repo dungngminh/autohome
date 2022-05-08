@@ -37,13 +37,15 @@ class _MainScreenState extends State<MainScreen> {
         ],
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(boxShadow: [
-          BoxShadow(
-            blurRadius: 14,
-            offset: const Offset(0, -5),
-            color: Palette.shadowBlack.withOpacity(0.06),
-          )
-        ]),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 14,
+              offset: const Offset(0, -5),
+              color: Palette.shadowBlack.withOpacity(0.06),
+            )
+          ],
+        ),
         child: BottomAppBar(
           notchMargin: 8,
           clipBehavior: Clip.hardEdge,
@@ -69,7 +71,7 @@ class _MainScreenState extends State<MainScreen> {
                         height: 4,
                       ),
                       Text(
-                        "Trang chủ",
+                        'Trang chủ',
                         style: TextStyle(
                           letterSpacing: -0.03,
                           color: _currentIndex == 0
@@ -97,7 +99,7 @@ class _MainScreenState extends State<MainScreen> {
                         height: 4,
                       ),
                       Text(
-                        "Lịch trình",
+                        'Lịch trình',
                         style: TextStyle(
                           letterSpacing: -0.03,
                           color: _currentIndex == 1
@@ -125,7 +127,7 @@ class _MainScreenState extends State<MainScreen> {
                         height: 4,
                       ),
                       Text(
-                        "Kịch bản",
+                        'Kịch bản',
                         style: TextStyle(
                           letterSpacing: -0.03,
                           color: _currentIndex == 3
@@ -152,7 +154,7 @@ class _MainScreenState extends State<MainScreen> {
                         height: 4,
                       ),
                       Text(
-                        "Cài đặt",
+                        'Cài đặt',
                         style: TextStyle(
                           fontSize: 12,
                           color: _currentIndex == 4
