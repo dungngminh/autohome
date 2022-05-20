@@ -129,7 +129,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   name: 'motor1',
                   location: 'Phòng khách',
                   status: 'off',
-                  type: 'Motor',
+                  type: 'fan',
                 ),
               ),
               Padding(
@@ -140,16 +140,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   borderRadius: BorderRadius.circular(20),
                   child: InkWell(
                     onTap: () async {
-                      await Navigator.pushNamed(context, '/add')
-                          .then((isRefresh) async {
-                        if (isRefresh == null) {
-                          return;
-                        } else if (isRefresh as bool) {
-                          await ref
-                              .read(deviceProvider.notifier)
-                              .getDataDevice();
-                        }
-                      });
+                      final isRefresh =
+                          await Navigator.pushNamed(context, '/add');
+                      if (isRefresh == null) {
+                        return;
+                      } else if (isRefresh as bool) {
+                        await ref.read(deviceProvider.notifier).getDataDevice();
+                      }
                     },
                     borderRadius: BorderRadius.circular(20),
                     child: Container(

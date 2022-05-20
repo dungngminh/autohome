@@ -3,7 +3,7 @@ import 'package:autohome/src/model/device.dart';
 
 const Map<String, DeviceType> deviceTypeMapping = {
   'fan': DeviceType.fan,
-  'led': DeviceType.led
+  'led': DeviceType.led,
 };
 
 const Map<String, bool> statusMapping = {
@@ -12,18 +12,16 @@ const Map<String, bool> statusMapping = {
 };
 
 const Map<bool, String> actionMapping = {
-  true: 'turnoff',
-  false: 'turnon',
+  true: 'off',
+  false: 'on',
 };
-
-
 
 extension DeviceX on Device {
   DeviceType get mapToDeviceType {
-    return deviceTypeMapping[type]!;
+    return deviceTypeMapping[type] ?? DeviceType.led;
   }
 
   bool get mapToStatus {
-    return statusMapping[status]!;
+    return statusMapping[status] ?? false;
   }
 }

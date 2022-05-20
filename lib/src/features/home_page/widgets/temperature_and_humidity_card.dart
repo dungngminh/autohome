@@ -252,7 +252,7 @@ class _TemperatureAndHumidityCardState
                               error: (err) => 'err°C',
                               loading: () => '...°C',
                               loaded: (data) =>
-                                  data['temp']!.toStringAsFixed(0) + '°C',
+                                  '${data['temp']!.toStringAsFixed(0)}°C',
                             )!,
                             // text: "${temperature.toStringAsFixed(0)}°C",
                             style: const TextStyle(
@@ -266,7 +266,7 @@ class _TemperatureAndHumidityCardState
                           error: (err) => 'err°C',
                           loading: () => '...°C',
                           loaded: (data) =>
-                              data['temp']!.toStringAsFixed(0) + '°C',
+                              '${data['temp']!.toStringAsFixed(0)}°C',
                         )!,
                         style: const TextStyle(
                           fontSize: 24,
@@ -293,10 +293,10 @@ class _TemperatureAndHumidityCardState
                         children: [
                           TextSpan(
                             text: state.whenOrNull(
-                              error: (err) => 'err°C',
-                              loading: () => '...°C',
+                              error: (err) => 'err°%',
+                              loading: () => '...°%',
                               loaded: (data) =>
-                                  data['humi']!.toStringAsFixed(0),
+                                  '${data['humi']!.toStringAsFixed(0)}%',
                             )!,
                             style: const TextStyle(
                               fontWeight: FontWeight.w700,
@@ -308,7 +308,8 @@ class _TemperatureAndHumidityCardState
                         state.whenOrNull(
                           error: (err) => 'err°C',
                           loading: () => '...°C',
-                          loaded: (data) => data['humi']!.toStringAsFixed(0),
+                          loaded: (data) =>
+                              '${data['humi']!.toStringAsFixed(0)}%',
                         )!,
                         style: const TextStyle(
                           fontSize: 24,

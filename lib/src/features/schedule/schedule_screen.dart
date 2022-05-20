@@ -76,7 +76,7 @@ class ScheduleScreen extends ConsumerWidget {
                     },
                   );
 
-                  final listStatus = <String>['On', 'Off'];
+                  final listStatus = <String>['on', 'off'];
                   final TextEditingController clockController =
                       TextEditingController();
                   return AlertDialog(
@@ -163,9 +163,7 @@ class ScheduleScreen extends ConsumerWidget {
                               if (pickedTime != null) {
                                 // log(pickedTime.toString());
                                 clockController.text =
-                                    pickedTime.hour.toString() +
-                                        ':' +
-                                        pickedTime.minute.toString();
+                                    '${pickedTime.hour}:${pickedTime.minute}';
                               } else {
                                 log('Time is not selected');
                               }
@@ -235,9 +233,7 @@ class ScheduleScreen extends ConsumerWidget {
                           color: Palette.mainBlue,
                         ),
                         subtitle: Text(
-                          data[index].deviceStatus +
-                              ' lúc ' +
-                              data[index].timeSetting,
+                          '${data[index].deviceStatus} lúc ${data[index].timeSetting}',
                         ),
                       );
                     },

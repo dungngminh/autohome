@@ -18,7 +18,7 @@ class StatusDeviceController {
   }) async {
     try {
       await dataRepository.doLedAction(
-        action: actionMapping[status]!,
+        action: actionMapping[status] ?? '',
         name: nameLed,
       );
     } catch (e) {

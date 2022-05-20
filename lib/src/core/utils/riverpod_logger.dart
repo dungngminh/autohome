@@ -5,7 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class RiverpodLogger extends ProviderObserver {
   @override
   void didAddProvider(
-      ProviderBase provider, Object? value, ProviderContainer container) {
+    ProviderBase provider,
+    Object? value,
+    ProviderContainer container,
+  ) {
     log(
       '''
 {

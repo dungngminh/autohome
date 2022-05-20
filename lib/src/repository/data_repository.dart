@@ -12,11 +12,10 @@ final dataRepositoryProvider = Provider<DataRepository>((ref) {
 });
 
 class DataRepository {
-
   DataRepository({required this.baseApi});
 
   final BaseApi baseApi;
-  
+
   Future<List<Device>> getDeviceData() async {
     try {
       final response = await baseApi.get(path: '/device');
@@ -46,12 +45,11 @@ class DataRepository {
     required String action,
   }) async {
     try {
-      final response = await baseApi.get(
+      final formData =
+          FormData.fromMap(<String, dynamic>{'name': name, 'status': action});
+      final response = await baseApi.post(
         path: '/led',
-        queryParams: <String, String>{
-          'ledname': name,
-          'ledstatus': action,
-        },
+        data: formData,
       );
 
       return response.data;

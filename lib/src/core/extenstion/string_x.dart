@@ -4,7 +4,7 @@ extension StringX on String {
       String newString = '';
       List<String> splitted = split(' ');
 
-      newString += splitted.removeAt(0)[0] + '.' + splitted.join();
+      newString += '${splitted.removeAt(0)[0]}.${splitted.join()}';
       return newString;
     } else {
       return this;
