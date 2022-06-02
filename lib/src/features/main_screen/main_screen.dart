@@ -3,9 +3,11 @@ import 'package:autohome/src/features/home_page/home_screen.dart';
 import 'package:autohome/src/features/schedule/schedule_screen.dart';
 import 'package:autohome/src/features/scripts/scrips_screen.dart';
 import 'package:autohome/src/features/settings/setting_screen.dart';
+import 'package:autohome/src/features/voice/controllers/voice_controller.dart';
 import 'package:autohome/src/features/voice/voice_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -31,7 +33,6 @@ class _MainScreenState extends State<MainScreen> {
         children: const [
           HomeScreen(),
           ScheduleScreen(),
-          VoiceScreen(),
           ScriptsScreen(),
           SettingScreen(),
         ],
@@ -137,7 +138,7 @@ class _MainScreenState extends State<MainScreen> {
                       ),
                     ],
                   ),
-                  onPressed: () => changeIndex(3),
+                  onPressed: () => changeIndex(2),
                 ),
                 MaterialButton(
                   child: Column(
@@ -164,31 +165,45 @@ class _MainScreenState extends State<MainScreen> {
                       )
                     ],
                   ),
-                  onPressed: () => changeIndex(4),
+                  onPressed: () => changeIndex(3),
                 ),
               ],
             ),
           ),
         ),
       ),
-      floatingActionButton: Container(
-        decoration: const BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 14,
-              offset: Offset(0, 4),
-              color: Palette.shadowBlue,
+      floatingActionButton: Consumer(
+        builder: (context, ref, child) {
+          return Container(
+            decoration: const BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 14,
+                  offset: Offset(0, 4),
+                  color: Palette.shadowBlue,
+                ),
+              ],
+              shape: BoxShape.circle,
             ),
-          ],
-          shape: BoxShape.circle,
-        ),
-        child: FloatingActionButton(
-          backgroundColor: Palette.mainBlue,
-          child: const Icon(
-            IconlyBold.voice,
-          ),
-          onPressed: () => changeIndex(2),
-        ),
+            child: FloatingActionButton(
+              backgroundColor: Palette.mainBlue,
+              child: const Icon(
+                IconlyBold.voice,
+              ),
+              onPressed: () async {
+                await ref.read(recorderProvider).record();
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return const Dialog(
+                      child: VoiceDialog(),
+                    );
+                  },
+                );
+              },
+            ),
+          );
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );

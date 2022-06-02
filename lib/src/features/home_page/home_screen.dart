@@ -2,7 +2,6 @@ import 'package:autohome/src/core/theme/palette.dart';
 import 'package:autohome/src/features/home_page/controller/device_controller.dart';
 import 'package:autohome/src/features/home_page/widgets/chip_button.dart';
 import 'package:autohome/src/features/home_page/widgets/device_card.dart';
-import 'package:autohome/src/features/home_page/widgets/energy_usage_card.dart';
 import 'package:autohome/src/features/home_page/widgets/temperature_and_humidity_card.dart';
 import 'package:autohome/src/model/device.dart';
 // import 'package:autohome/src/di/injector.dart';
@@ -37,28 +36,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     });
   }
 
-  List<Widget> _buildPageIndicator() {
-    List<Widget> list = [];
-    for (int i = 0; i < 2; i++) {
-      list.add(
-        i == currentPage ? _buildIndicator(true) : _buildIndicator(false),
-      );
-    }
-    return list;
-  }
+  // List<Widget> _buildPageIndicator() {
+  //   List<Widget> list = [];
+  //   for (int i = 0; i < 2; i++) {
+  //     list.add(
+  //       i == currentPage ? _buildIndicator(true) : _buildIndicator(false),
+  //     );
+  //   }
+  //   return list;
+  // }
 
-  Widget _buildIndicator(bool isChanged) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      margin: const EdgeInsets.symmetric(horizontal: 3.0),
-      height: 8,
-      width: isChanged ? 24 : 8,
-      decoration: BoxDecoration(
-        color: isChanged ? Palette.textGray : Palette.textGray.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(10),
-      ),
-    );
-  }
+  // Widget _buildIndicator(bool isChanged) {
+  //   return AnimatedContainer(
+  //     duration: const Duration(milliseconds: 300),
+  //     margin: const EdgeInsets.symmetric(horizontal: 3.0),
+  //     height: 8,
+  //     width: isChanged ? 24 : 8,
+  //     decoration: BoxDecoration(
+  //       color: isChanged ? Palette.textGray : Palette.textGray.withOpacity(0.3),
+  //       borderRadius: BorderRadius.circular(10),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -108,30 +107,31 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   ],
                 ),
               ),
-              SizedBox(
-                height: 180,
-                child: PageView(
-                  onPageChanged: changePage,
-                  children: const [
-                    TemperatureAndHumidityCard(),
-                    EnergyUsageCard(),
-                  ],
-                ),
-              ),
-              Wrap(
-                alignment: WrapAlignment.center,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: _buildPageIndicator(),
-              ),
+              const TemperatureAndHumidityCard(),
+              // SizedBox(
+              //   height: 180,
+              //   child: PageView(
+              //     onPageChanged: changePage,
+              //     children: const [
+              //       TemperatureAndHumidityCard(),
+              //       EnergyUsageCard(),
+              //     ],
+              //   ),
+              // ),
+              // Wrap(
+              //   alignment: WrapAlignment.center,
+              //   crossAxisAlignment: WrapCrossAlignment.center,
+              //   children: _buildPageIndicator(),
+              // ),
               const DevicePanel(),
-              DeviceCard(
-                device: Device(
-                  name: 'motor1',
-                  location: 'Phòng khách',
-                  status: 'off',
-                  type: 'fan',
-                ),
-              ),
+              // DeviceCard(
+              //   device: Device(
+              //     name: 'motor1',
+              //     location: 'Phòng khách',
+              //     status: 'off',
+              //     type: 'fan',
+              //   ),
+              // ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 80, vertical: 16),

@@ -26,7 +26,7 @@ class _TemperatureAndHumidityCardState
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Container(
-        padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+        padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
         margin: const EdgeInsets.only(left: 24, bottom: 8, right: 24),
         decoration: BoxDecoration(
           color: Palette.backgroundColor,

@@ -1,4 +1,4 @@
-import 'package:autohome/src/core/extenstion/device_x.dart';
+import 'package:autohome/src/core/extenstion/device_extension.dart';
 import 'package:autohome/src/repository/data_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

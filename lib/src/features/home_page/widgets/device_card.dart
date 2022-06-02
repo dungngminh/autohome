@@ -1,6 +1,6 @@
 import 'package:autohome/src/core/enum/enum.dart';
-import 'package:autohome/src/core/extenstion/device_x.dart';
-import 'package:autohome/src/core/extenstion/string_x.dart';
+import 'package:autohome/src/core/extenstion/device_extension.dart';
+import 'package:autohome/src/core/extenstion/string_extension.dart';
 import 'package:autohome/src/core/theme/palette.dart';
 import 'package:autohome/src/core/utils/app_utils.dart';
 import 'package:autohome/src/features/home_page/controller/action_device_controller.dart';
@@ -168,145 +168,152 @@ class _DeviceCardState extends State<DeviceCard> {
           const SizedBox(
             height: 24,
           ),
-          IgnorePointer(
-            ignoring: !statusNotifier.value,
-            child: Opacity(
-              opacity: statusNotifier.value ? 1.0 : 0.6,
-              child: widget.device.mapToDeviceType == DeviceType.fan
-                  ? Row(
-                      children: [
-                        const Text(
-                          'Tốc độ',
-                          style: TextStyle(
-                            color: Palette.textBlack,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 4,
-                          child: ValueListenableBuilder<double>(
-                            valueListenable: valueSlider,
-                            builder: (context, value, child) {
-                              return Consumer(
-                                builder: (context, ref, child) {
-                                  return Slider(
-                                    onChanged: (newValue) {
-                                      valueSlider.value = newValue;
-                                      if (newValue == 0.0) {
-                                        statusNotifier.value = false;
-                                      }
+          ValueListenableBuilder<bool>(
+            valueListenable: statusNotifier,
+            builder: (context, value, child) {
+              return IgnorePointer(
+                ignoring: value,
+                child: Opacity(
+                  opacity: value ? 1.0 : 0.6,
+                  child: widget.device.mapToDeviceType == DeviceType.fan
+                      ? Row(
+                          children: [
+                            const Text(
+                              'Tốc độ',
+                              style: TextStyle(
+                                color: Palette.textBlack,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            Expanded(
+                              flex: 4,
+                              child: ValueListenableBuilder<double>(
+                                valueListenable: valueSlider,
+                                builder: (context, value, child) {
+                                  return Consumer(
+                                    builder: (context, ref, child) {
+                                      return Slider(
+                                        onChanged: (newValue) {
+                                          valueSlider.value = newValue;
+                                          if (newValue == 0.0) {
+                                            statusNotifier.value = false;
+                                          }
+                                        },
+                                        value: value,
+                                        onChangeStart: (value) {},
+                                        onChangeEnd: (value) async {
+                                          await ref
+                                              .read(actionDeviceProvider)
+                                              .doFanAction(
+                                                nameFan: widget.device.name,
+                                                value: int.parse(
+                                                  value.toStringAsFixed(0),
+                                                ),
+                                              )
+                                              .then((_) {
+                                            Fluttertoast.showToast(
+                                              msg: value == 0.0
+                                                  ? 'Đã tắt ${widget.device.name}'
+                                                  : 'Đã chỉnh tốc độ ${widget.device.name} ${value.toStringAsFixed(0)}',
+                                            );
+                                          }).catchError((error, __) {
+                                            AppUtils.logger(
+                                              error,
+                                              location: runtimeType,
+                                              isError: true,
+                                            );
+                                            Fluttertoast.showToast(
+                                              msg:
+                                                  'Chỉnh tốc độ ${widget.device.name} ${value.toStringAsFixed(0)} không thành công,\nvui lòng thử lại',
+                                            );
+                                          });
+                                        },
+                                        divisions: 3,
+                                        max: 50,
+                                        min: 0,
+                                        label: value.toStringAsFixed(0),
+                                      );
                                     },
-                                    value: value,
-                                    onChangeStart: (value) {},
-                                    onChangeEnd: (value) async {
-                                      await ref
-                                          .read(actionDeviceProvider)
-                                          .doFanAction(
-                                            nameFan: widget.device.name,
-                                            value: int.parse(
-                                              value.toStringAsFixed(0),
-                                            ),
-                                          )
-                                          .then((_) {
-                                        Fluttertoast.showToast(
-                                          msg: value == 0.0
-                                              ? 'Đã tắt ${widget.device.name}'
-                                              : 'Đã chỉnh tốc độ ${widget.device.name} ${value.toStringAsFixed(0)}',
-                                        );
-                                      }).catchError((error, __) {
-                                        AppUtils.logger(
-                                          error,
-                                          location: runtimeType,
-                                          isError: true,
-                                        );
-                                        Fluttertoast.showToast(
-                                          msg:
-                                              'Chỉnh tốc độ ${widget.device.name} ${value.toStringAsFixed(0)} không thành công,\nvui lòng thử lại',
-                                        );
-                                      });
-                                    },
-                                    divisions: 3,
-                                    max: 50,
-                                    min: 0,
-                                    label: value.toStringAsFixed(0),
                                   );
                                 },
-                              );
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Material(
-                          color: Colors.transparent,
-                          child: Ink(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 12,
+                              ),
                             ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(32),
-                              color: Palette.elementLightGray,
+                            const SizedBox(width: 8),
+                            Material(
+                              color: Colors.transparent,
+                              child: Ink(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(32),
+                                  color: Palette.elementLightGray,
+                                ),
+                                child: Text(
+                                  widget.device.location
+                                      .convertSmallerLocationName,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Palette.textGray,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
                             ),
-                            child: Text(
-                              widget.device.location.convertSmallerLocationName,
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Palette.textGray,
+                          ],
+                        )
+                      : Row(
+                          children: [
+                            const Text(
+                              'Màu sắc',
+                              style: TextStyle(
+                                color: Palette.textBlack,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                          ),
-                        ),
-                      ],
-                    )
-                  : Row(
-                      children: [
-                        const Text(
-                          'Màu sắc',
-                          style: TextStyle(
-                            color: Palette.textBlack,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                            width: 40,
-                            height: 30,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(32),
-                              color: widget.color,
-                            ),
-                          ),
-                        ),
-                        const Spacer(),
-                        Material(
-                          color: Colors.transparent,
-                          child: Ink(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 12,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(32),
-                              color: Palette.elementLightGray,
-                            ),
-                            child: Text(
-                              widget.device.location.convertSmallerLocationName,
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Palette.textGray,
-                                fontWeight: FontWeight.w700,
+                            const SizedBox(width: 8),
+                            GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                width: 40,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(32),
+                                  color: widget.color,
+                                ),
                               ),
                             ),
-                          ),
+                            const Spacer(),
+                            Material(
+                              color: Colors.transparent,
+                              child: Ink(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(32),
+                                  color: Palette.elementLightGray,
+                                ),
+                                child: Text(
+                                  widget.device.location
+                                      .convertSmallerLocationName,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Palette.textGray,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-            ),
+                ),
+              );
+            },
           )
         ],
       ),

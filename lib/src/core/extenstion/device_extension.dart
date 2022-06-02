@@ -16,7 +16,7 @@ const Map<bool, String> actionMapping = {
   false: 'on',
 };
 
-extension DeviceX on Device {
+extension DeviceExtension on Device {
   DeviceType get mapToDeviceType {
     return deviceTypeMapping[type] ?? DeviceType.led;
   }

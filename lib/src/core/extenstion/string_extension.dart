@@ -1,4 +1,4 @@
-extension StringX on String {
+extension StringExtension on String {
   String get convertSmallerLocationName {
     if (length > 7) {
       String newString = '';
