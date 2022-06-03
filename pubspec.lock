@@ -451,7 +451,7 @@ packages:
     source: hosted
     version: "2.0.2"
   path:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path
       url: "https://pub.dartlang.org"
@@ -472,7 +472,7 @@ packages:
     source: hosted
     version: "1.0.0"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
       url: "https://pub.dartlang.org"
@@ -632,6 +632,48 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
+  record:
+    dependency: "direct main"
+    description:
+      name: record
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.1.1"
+  record_linux:
+    dependency: transitive
+    description:
+      name: record_linux
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
+  record_macos:
+    dependency: transitive
+    description:
+      name: record_macos
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
+  record_platform_interface:
+    dependency: transitive
+    description:
+      name: record_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.0"
+  record_web:
+    dependency: transitive
+    description:
+      name: record_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.1"
+  record_windows:
+    dependency: transitive
+    description:
+      name: record_windows
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.3"
   riverpod:
     dependency: transitive
     description:

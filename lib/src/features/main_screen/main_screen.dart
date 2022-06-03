@@ -190,8 +190,8 @@ class _MainScreenState extends State<MainScreen> {
               child: const Icon(
                 IconlyBold.voice,
               ),
-              onPressed: () async {
-                await ref.read(recorderProvider).record();
+              onPressed: () {
+                ref.read(recorderProvider).record();
                 showDialog(
                   context: context,
                   builder: (context) {

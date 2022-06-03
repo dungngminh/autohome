@@ -93,6 +93,7 @@ class _DeviceCardState extends State<DeviceCard> {
                         activeColor: Palette.mainBlue,
                         onChanged: (value) async {
                           if (widget.device.mapToDeviceType == DeviceType.fan) {
+                            Fluttertoast.cancel();
                             Fluttertoast.showToast(
                               msg: value
                                   ? 'Đang bật ${widget.device.name}'
@@ -107,6 +108,8 @@ class _DeviceCardState extends State<DeviceCard> {
                                 .then((_) {
                               statusNotifier.value = value;
                               valueSlider.value = value ? 20 : 0;
+                              Fluttertoast.cancel();
+
                               Fluttertoast.showToast(
                                 msg: value
                                     ? 'Đã bật ${widget.device.name}'
@@ -118,6 +121,8 @@ class _DeviceCardState extends State<DeviceCard> {
                                 location: runtimeType,
                                 isError: true,
                               );
+                              Fluttertoast.cancel();
+
                               Fluttertoast.showToast(
                                 msg: value
                                     ? 'Bật ${widget.device.name} không thành công,\nvui lòng thử lại'
@@ -125,6 +130,8 @@ class _DeviceCardState extends State<DeviceCard> {
                               );
                             });
                           } else {
+                            Fluttertoast.cancel();
+
                             Fluttertoast.showToast(
                               msg: value
                                   ? 'Đang bật ${widget.device.name}'
@@ -138,6 +145,8 @@ class _DeviceCardState extends State<DeviceCard> {
                                 )
                                 .then((_) {
                               statusNotifier.value = value;
+                              Fluttertoast.cancel();
+
                               Fluttertoast.showToast(
                                 msg: value
                                     ? 'Đã bật ${widget.device.name}'
@@ -149,6 +158,8 @@ class _DeviceCardState extends State<DeviceCard> {
                                 location: runtimeType,
                                 isError: true,
                               );
+                              Fluttertoast.cancel();
+
                               Fluttertoast.showToast(
                                 msg: value
                                     ? 'Bật ${widget.device.name} không thành công,\nvui lòng thử lại'
@@ -212,6 +223,7 @@ class _DeviceCardState extends State<DeviceCard> {
                                                 ),
                                               )
                                               .then((_) {
+                                            Fluttertoast.cancel();
                                             Fluttertoast.showToast(
                                               msg: value == 0.0
                                                   ? 'Đã tắt ${widget.device.name}'

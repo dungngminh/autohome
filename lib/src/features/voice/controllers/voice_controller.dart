@@ -1,39 +1,45 @@
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_sound/flutter_sound.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:record/record.dart';
 
 final recorderProvider = AutoDisposeProvider(
   (ref) {
-    return RecordAudioProvider(recorder: FlutterSoundRecorder());
+    return RecordAudioProvider(
+      recorder: Record(),
+    );
   },
 );
 
 class RecordAudioProvider {
   RecordAudioProvider({
-    required FlutterSoundRecorder recorder,
+    required Record recorder,
   }) : _recorder = recorder {
-    _recorder.openRecorder().then((value) {
-      isRecordReady = true;
-    });
+    record();
   }
 
-  late final FlutterSoundRecorder _recorder;
-  bool isRecordReady = false;
-  static const fileName = 'temp.wav';
+  final Record _recorder;
 
   Future<void> record() async {
-    // PermissionStatus status = await Permission.microphone.request();
-    // if (status != PermissionStatus.granted) {
-    //   throw RecordingPermissionException('Microphone permission not granted');
-    // }
-    await _recorder.startRecorder(
-      toFile: fileName,
-      codec: Codec.pcm16WAV,
-      numChannels: 1,
-      sampleRate: 16000,
-    );
+    String path = (await getTemporaryDirectory()).path;
+    if (await _recorder.hasPermission()) {
+      await _recorder.start(
+        samplingRate: 16000,
+        encoder: AudioEncoder.wav,
+        path: join(path, 'temp.wav'),
+      );
+    } else {
+      await Permission.microphone.request();
+      await Permission.storage.request();
+      await Permission.manageExternalStorage.request();
+    }
   }
 
   Future<void> stopRecorder() async {
-    await _recorder.stopRecorder();
+    final url = await _recorder.stop();
+    log(url.toString());
   }
 }
