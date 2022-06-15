@@ -22,9 +22,11 @@ class VoiceDialog extends ConsumerWidget {
             height: 8,
           ),
           ElevatedButton(
-            onPressed: () {
-              ref.read(recorderProvider).stopRecorder();
-              Navigator.pop(context);
+            onPressed: () async {
+              final provider = await ref.read(recorderProvider);
+              await provider.stopRecorder().then((_) {
+                Navigator.pop(context);
+              });
             },
             child: const Text('Dừng'),
           )
