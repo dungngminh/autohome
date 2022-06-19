@@ -8,7 +8,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final dataRepositoryProvider = Provider<DataRepository>((ref) {
-  return DataRepository(baseApi: ref.watch(baseApiProvider('http://0.tcp.ap.ngrok.io:16985')));
+  return DataRepository(
+    baseApi: ref.watch(
+      baseApiProvider('http://0.tcp.ap.ngrok.io:17674'),
+    ),
+  );
 });
 
 class DataRepository {

@@ -9,7 +9,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 final baseApiProvider = ProviderFamily<BaseApi, String>(
   (ref, url) {
     var dioOption = BaseOptions(
-      // baseUrl: url,
+      baseUrl: url,
       receiveTimeout: const Duration(minutes: 3).inMilliseconds,
       connectTimeout: const Duration(minutes: 3).inMilliseconds,
     );
