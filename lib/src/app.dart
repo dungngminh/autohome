@@ -15,7 +15,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'SF_Pro_Display'),
+      theme: ThemeData(fontFamily: 'SF_Pro_Display', useMaterial3: true),
       title: 'Autohome',
       routes: <String, WidgetBuilder>{
         '/': (_) => const SplashView(),

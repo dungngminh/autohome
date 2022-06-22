@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:autohome/src/core/theme/palette.dart';
 import 'package:autohome/src/features/home_page/home_screen.dart';
 import 'package:autohome/src/features/schedule/schedule_screen.dart';
@@ -18,6 +20,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
+  Timer? _timer;
 
   void changeIndex(int value) {
     setState(() {
@@ -174,6 +177,7 @@ class _MainScreenState extends State<MainScreen> {
       ),
       floatingActionButton: Consumer(
         builder: (context, ref, child) {
+          ref.read(recorderProvider);
           return Container(
             decoration: const BoxDecoration(
               boxShadow: [
@@ -190,17 +194,24 @@ class _MainScreenState extends State<MainScreen> {
               child: const Icon(
                 IconlyBold.voice,
               ),
-              onPressed: () async {
+              onPressed: () {
                 showDialog(
                   context: context,
                   builder: (context) {
+                    _timer = Timer(const Duration(seconds: 3), () {
+                      ref.read(recorderProvider).stopRecorder();
+                      Navigator.of(context).pop();
+                    });
+                    ref.read(recorderProvider).record();
                     return const Dialog(
                       child: VoiceDialog(),
                     );
                   },
-                );
-                final audioController = await ref.read(recorderProvider);
-                audioController.record();
+                ).then((val) {
+                  if (_timer!.isActive) {
+                    _timer!.cancel();
+                  }
+                });
               },
             ),
           );

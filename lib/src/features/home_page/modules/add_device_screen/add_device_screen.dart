@@ -72,11 +72,16 @@ class AddDevicePanel extends ConsumerStatefulWidget {
 class _AddDevicePanelState extends ConsumerState<AddDevicePanel> {
   final _deviceTypeMapping = <String, String>{'Led': 'Đèn', 'Motor': 'Quạt'};
   final _deviceStatusMapping = <String, String>{'on': 'Bật', 'off': 'Tắt'};
+  final _locationList = <String>[
+    'Phòng khách',
+    'Nhà bếp',
+    'Phòng ngủ',
+  ];
   late String _selectedDeviceType;
   late String _selectedStatus;
+  late String _selectedLocation;
 
   late final TextEditingController _nameDeviceController;
-  late final TextEditingController _locationController;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late Widget iconWidget;
   @override
@@ -84,8 +89,8 @@ class _AddDevicePanelState extends ConsumerState<AddDevicePanel> {
     super.initState();
     _selectedDeviceType = _deviceTypeMapping.entries.first.value;
     _selectedStatus = _deviceStatusMapping.entries.first.value;
+    _selectedLocation = _locationList.first;
     _nameDeviceController = TextEditingController();
-    _locationController = TextEditingController();
     iconWidget = const Icon(
       PhosphorIcons.lightbulbBold,
       color: Palette.mainBlue,
@@ -110,10 +115,10 @@ class _AddDevicePanelState extends ConsumerState<AddDevicePanel> {
     }
   }
 
-  void _onStatusChooseAction(String? newValue) {
+  void _onLocationChanged(String? newValue) {
     if (newValue is String) {
       setState(() {
-        _selectedStatus = newValue;
+        _selectedLocation = newValue;
       });
     }
   }
@@ -126,7 +131,7 @@ class _AddDevicePanelState extends ConsumerState<AddDevicePanel> {
           .firstWhere((key) => _deviceStatusMapping[key] == _selectedStatus);
 
       final params = AddDeviceParams(
-        location: _locationController.text,
+        location: _selectedLocation,
         name: _nameDeviceController.text,
         status: deviceStatus,
         type: deviceType,
@@ -186,7 +191,6 @@ class _AddDevicePanelState extends ConsumerState<AddDevicePanel> {
                         height: 8,
                       ),
                       DropdownButtonFormField<String>(
-                        value: _selectedDeviceType,
                         decoration: const InputDecoration(
                           hintText: 'Loại thiết bị',
                           border: OutlineInputBorder(),
@@ -205,19 +209,21 @@ class _AddDevicePanelState extends ConsumerState<AddDevicePanel> {
                       const SizedBox(
                         height: 8,
                       ),
-                      TextFormField(
-                        controller: _locationController,
+                      DropdownButtonFormField<String>(
+                        value: _selectedLocation,
                         decoration: const InputDecoration(
                           hintText: 'Nơi đặt thiết bị',
                           border: OutlineInputBorder(),
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Nhập giá trị';
-                          } else {
-                            return null;
-                          }
-                        },
+                        items: _locationList.map<DropdownMenuItem<String>>(
+                          ((e) {
+                            return DropdownMenuItem(
+                              value: e,
+                              child: Text(e),
+                            );
+                          }),
+                        ).toList(),
+                        onChanged: _onLocationChanged,
                       ),
                       const SizedBox(
                         height: 8,
@@ -237,7 +243,7 @@ class _AddDevicePanelState extends ConsumerState<AddDevicePanel> {
                             );
                           }),
                         ).toList(),
-                        onChanged: _onStatusChooseAction,
+                        onChanged: _onLocationChanged,
                       ),
                     ],
                   ),

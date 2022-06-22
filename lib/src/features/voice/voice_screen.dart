@@ -2,11 +2,16 @@ import 'package:autohome/src/features/voice/controllers/voice_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class VoiceDialog extends ConsumerWidget {
+class VoiceDialog extends StatefulWidget {
   const VoiceDialog({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  State<VoiceDialog> createState() => _VoiceDialogState();
+}
+
+class _VoiceDialogState extends State<VoiceDialog> {
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -21,14 +26,31 @@ class VoiceDialog extends ConsumerWidget {
           const SizedBox(
             height: 8,
           ),
-          ElevatedButton(
-            onPressed: () async {
-              final provider = await ref.read(recorderProvider);
-              await provider.stopRecorder().then((_) {
-                Navigator.pop(context);
-              });
-            },
-            child: const Text('Dừng'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // ElevatedButton(
+              //   onPressed: () async {
+              //     await ref.read(recorderProvider).record();
+              //   },
+              //   child: const Text('Ghi âm'),
+              // ),
+              Consumer(
+                builder: (context, ref, child) {
+                  return ElevatedButton(
+                    onPressed: () async {
+                      await ref
+                          .read(recorderProvider)
+                          .stopRecorder()
+                          .whenComplete(
+                            () => Navigator.pop(context),
+                          );
+                    },
+                    child: const Text('Dừng'),
+                  );
+                },
+              ),
+            ],
           )
         ],
       ),

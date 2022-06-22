@@ -85,9 +85,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                 ),
               ),
               const TemperatureAndHumidityCard(),
-              
               const DevicePanel(),
-             
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 80, vertical: 16),
@@ -152,11 +150,10 @@ class _DevicePanelState extends State<DevicePanel> {
   late List<bool> listRoomSelectedStatus;
 
   final listRoom = <String>[
-    'Yêu thích',
+    'Tất cả',
     'Nhà bếp',
     'Phòng khách',
-    'Phòng ngủ 1',
-    'Phòng ngủ 2'
+    'Phòng ngủ',
   ];
 
   @override

@@ -10,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final dataRepositoryProvider = Provider<DataRepository>((ref) {
   return DataRepository(
     baseApi: ref.watch(
-      baseApiProvider('http://0.tcp.ap.ngrok.io:17674'),
+      baseApiProvider('http://0.tcp.ap.ngrok.io:19249'),
     ),
   );
 });
@@ -67,7 +67,7 @@ class DataRepository {
       final formData =
           FormData.fromMap(<String, dynamic>{'name': name, 'value': value});
       log(formData.toString());
-      await baseApi.post(path: '/motor', data: formData);
+      await baseApi.post(path: '/fan', data: formData);
     } catch (e) {
       throw Exception('happy add device');
     }

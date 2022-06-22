@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:autohome/src/core/utils/app_utils.dart';
@@ -76,11 +77,11 @@ final httpBaseRef = Provider((ref) {
 
 class BaseApiHttp {
   final uri = Uri.https(
-    'bbfd-2001-ee0-4b4f-e880-97e2-6817-957d-39c3.ap.ngrok.io',
+    'lequocthinh.com',
     'api/v1/transcript',
   );
 
-  Future<String?> post(String filePath) async {
+  Future<Map<String, dynamic>?> post(String filePath) async {
     var request = http.MultipartRequest('POST', uri)
       ..files.add(
         await http.MultipartFile.fromPath(
@@ -91,11 +92,12 @@ class BaseApiHttp {
       ..headers['Content-Type'] = 'multipart/form-data';
     var response = await request.send();
     if (response.statusCode == 200) {
-      print('Uploaded!');
+      log('Uploaded!');
+      final data = await response.stream.toBytes();
+      return jsonDecode(utf8.decode(data)) as Map<String, dynamic>;
     } else {
-      print(response);
+      log(response.toString());
       throw Exception('Fail');
     }
-    return null;
   }
 }
