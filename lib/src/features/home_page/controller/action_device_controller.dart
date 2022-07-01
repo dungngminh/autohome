@@ -39,4 +39,16 @@ class StatusDeviceController {
       throw Exception();
     }
   }
+
+  Future<void> doDoorAction({
+    required bool status,
+  }) async {
+    try {
+      await dataRepository.doDoorAction(
+        action: actionMapping[status] ?? '',
+      );
+    } catch (e) {
+      throw Exception();
+    }
+  }
 }

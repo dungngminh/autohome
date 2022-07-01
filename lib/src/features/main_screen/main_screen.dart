@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:autohome/src/core/theme/palette.dart';
 import 'package:autohome/src/features/home_page/home_screen.dart';
 import 'package:autohome/src/features/schedule/schedule_screen.dart';
-import 'package:autohome/src/features/scripts/scrips_screen.dart';
-import 'package:autohome/src/features/settings/setting_screen.dart';
 import 'package:autohome/src/features/voice/controllers/voice_controller.dart';
 import 'package:autohome/src/features/voice/voice_screen.dart';
 import 'package:flutter/material.dart';
@@ -36,8 +34,6 @@ class _MainScreenState extends State<MainScreen> {
         children: const [
           HomeScreen(),
           ScheduleScreen(),
-          ScriptsScreen(),
-          SettingScreen(),
         ],
       ),
       bottomNavigationBar: Container(
@@ -58,7 +54,7 @@ class _MainScreenState extends State<MainScreen> {
             height: 75,
             decoration: const BoxDecoration(color: Palette.backgroundColor),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 MaterialButton(
                   child: Column(
@@ -115,61 +111,6 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   onPressed: () => changeIndex(1),
                 ),
-                MaterialButton(
-                  padding: const EdgeInsets.only(left: 24.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        IconlyBold.document,
-                        size: 26,
-                        color: _currentIndex == 3
-                            ? Palette.elementBlack
-                            : Palette.elementBlue,
-                      ),
-                      const SizedBox(
-                        height: 4,
-                      ),
-                      Text(
-                        'Kịch bản',
-                        style: TextStyle(
-                          letterSpacing: -0.03,
-                          color: _currentIndex == 3
-                              ? Palette.elementBlack
-                              : Palette.elementBlue,
-                        ),
-                      ),
-                    ],
-                  ),
-                  onPressed: () => changeIndex(2),
-                ),
-                MaterialButton(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        IconlyBold.setting,
-                        size: 26,
-                        color: _currentIndex == 4
-                            ? Palette.elementBlack
-                            : Palette.elementBlue,
-                      ),
-                      const SizedBox(
-                        height: 4,
-                      ),
-                      Text(
-                        'Cài đặt',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: _currentIndex == 4
-                              ? Palette.elementBlack
-                              : Palette.elementBlue,
-                        ),
-                      )
-                    ],
-                  ),
-                  onPressed: () => changeIndex(3),
-                ),
               ],
             ),
           ),
@@ -198,9 +139,10 @@ class _MainScreenState extends State<MainScreen> {
                 showDialog(
                   context: context,
                   builder: (context) {
-                    _timer = Timer(const Duration(seconds: 3), () {
-                      ref.read(recorderProvider).stopRecorder();
-                      Navigator.of(context).pop();
+                    _timer = Timer(const Duration(seconds: 2), () async {
+                      await ref.read(recorderProvider).stopRecorder().then(
+                            (_) => Navigator.of(context).pop(),
+                          );
                     });
                     ref.read(recorderProvider).record();
                     return const Dialog(

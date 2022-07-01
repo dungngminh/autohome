@@ -8,7 +8,7 @@ final audioRepositoyRef = Provider((ref) {
     httpBaseRef,
   );
 
-  return AudioRepository(
+  return AudioRepository( 
     baseApi: baseApiRef,
   );
 });
@@ -16,7 +16,7 @@ final audioRepositoyRef = Provider((ref) {
 class AudioRepository {
   AudioRepository({
     required this.baseApi,
-  });
+  }); 
 
   final BaseApiHttp baseApi;
   Future<Map<String, dynamic>?> sendFileToServer(String filePath) async {

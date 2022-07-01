@@ -1,10 +1,14 @@
+import 'package:autohome/src/core/enum/enum.dart';
+import 'package:autohome/src/core/extenstion/device_extension.dart';
 import 'package:autohome/src/core/theme/palette.dart';
 import 'package:autohome/src/features/home_page/controller/device_controller.dart';
-import 'package:autohome/src/features/home_page/widgets/chip_button.dart';
-import 'package:autohome/src/features/home_page/widgets/device_card.dart';
+import 'package:autohome/src/features/home_page/widgets/door_card.dart';
+import 'package:autohome/src/features/home_page/widgets/fan_card.dart';
+import 'package:autohome/src/features/home_page/widgets/gas_card.dart';
+import 'package:autohome/src/features/home_page/widgets/led_card.dart';
+import 'package:autohome/src/features/home_page/widgets/light_card.dart';
 import 'package:autohome/src/features/home_page/widgets/temperature_and_humidity_card.dart';
 import 'package:autohome/src/model/device.dart';
-// import 'package:autohome/src/di/injector.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,14 +22,11 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen>
     with SingleTickerProviderStateMixin {
-  late final PageController pageController;
   int currentPage = 0;
   late List<bool> listDeviceStatus;
 
   @override
   void initState() {
-    pageController = PageController();
-    listDeviceStatus = List.filled(3, false);
     // getAllDevice();
     super.initState();
   }
@@ -84,7 +85,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   ],
                 ),
               ),
-              const TemperatureAndHumidityCard(),
+              SizedBox(
+                height: 190,
+                child: ListView(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  scrollDirection: Axis.horizontal,
+                  children: const [
+                    TemperatureAndHumidityCard(),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    LightCard(),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    GasCard(),
+                  ],
+                ),
+              ),
               const DevicePanel(),
               Padding(
                 padding:
@@ -166,37 +184,6 @@ class _DevicePanelState extends State<DevicePanel> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: 100,
-          child: ListView.separated(
-            padding: const EdgeInsets.only(
-              left: 24,
-              top: 24,
-              bottom: 16,
-              right: 24,
-            ),
-            itemCount: listRoom.length,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              return ChipButton(
-                onChipAction: () {
-                  setState(() {
-                    if (!listRoomSelectedStatus[index]) {
-                      listRoomSelectedStatus =
-                          List.filled(listRoom.length, false);
-                      listRoomSelectedStatus[index] = true;
-                    }
-                  });
-                },
-                roomName: listRoom[index],
-                isSeleted: listRoomSelectedStatus[index],
-              );
-            },
-            separatorBuilder: (context, index) {
-              return const SizedBox(width: 8);
-            },
-          ),
-        ),
         Consumer(
           builder: (context, ref, child) {
             final state = ref.watch(deviceProvider);
@@ -206,19 +193,28 @@ class _DevicePanelState extends State<DevicePanel> {
               },
               loaded: (List<Device> devices) {
                 return Column(
-                  children: devices
-                      .map(
-                        ((device) => DeviceCard(
-                              color: Colors.red,
-                              device: device,
-                            )),
-                      )
-                      .toList(),
+                  children: devices.map(
+                    ((device) {
+                      if (device.mapToDeviceType == DeviceType.fan) {
+                        return FanCard(
+                          device: device,
+                          color: Palette.elementBlue,
+                        );
+                      } else if (device.mapToDeviceType == DeviceType.led) {
+                        return LedCard(
+                          device: device,
+                          color: Palette.elementBlue,
+                        );
+                      } else {
+                        return DoorCard(
+                          device: device,
+                          color: Palette.elementBlue,
+                        );
+                      }
+                    }),
+                  ).toList(),
                 );
               },
-              loading: () => const Center(
-                child: CircularProgressIndicator(),
-              ),
               orElse: () => const SizedBox(),
             );
           },

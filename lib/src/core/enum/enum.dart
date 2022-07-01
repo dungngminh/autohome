@@ -1,9 +1,5 @@
 enum DeviceType {
   fan,
   led,
-  ledRGB,
+  door,
 }
-
-
-
-
